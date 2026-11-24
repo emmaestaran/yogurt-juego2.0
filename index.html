@@ -4,185 +4,430 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SOYAJOY - Acchiappa la Frutta!</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;700&display=swap');
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            font-family: 'Quicksand', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fef5d4;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            overflow: hidden;
             user-select: none;
             -webkit-user-select: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.25s ease;
         }
 
         .font-game {
-            font-family: 'Fredoka One', cursive;
+            font-family: "Arial Rounded MT Bold", "Trebuchet MS", -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 800;
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(12px);
-            border: 3px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
+        .container {
+            width: 100%;
+            max-width: 540px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .brand-banner {
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 2px solid #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fef5d4;
+            padding: 6px 16px;
+        }
+
+        .brand-banner img {
+            max-height: 82px;
+            width: auto;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .stats-bar {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 16px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 2px solid #ffffff;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .lives-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lives-hearts {
+            display: flex;
+            gap: 4px;
+            font-size: 20px;
+        }
+
+        .score-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .combo-val {
+            font-size: 17px;
+            color: #9333ea;
+            text-align: center;
+        }
+
+        .score-val {
+            font-size: 22px;
+            color: #059669;
+            text-align: right;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 4.4;
+            max-height: 64vh;
+            min-height: 330px;
         }
 
         #gameCanvas {
-            border-radius: 1.5rem;
-            box-shadow: 0 15px 35px rgba(100, 116, 139, 0.18);
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 24px;
+            box-shadow: 0 12px 28px rgba(100, 116, 139, 0.16);
             touch-action: none;
+            cursor: pointer;
         }
 
-        .btn-bounce {
+        .overlay-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            z-index: 30;
+        }
+
+        .title-main {
+            font-size: 25px;
+            color: #d97706;
+            margin-bottom: 4px;
+        }
+
+        .subtitle-main {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 14px;
+            font-weight: 600;
+            max-width: 340px;
+        }
+
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 420px;
+            margin-bottom: 16px;
+        }
+
+        .character-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 6px;
+            border-radius: 18px;
+            border: 4px solid transparent;
             cursor: pointer;
             touch-action: manipulation;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.2s ease;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
         }
-        .btn-bounce:hover {
-            transform: scale(1.04);
-        }
-        .btn-bounce:active {
-            transform: scale(0.96);
+
+        .character-card:active {
+            transform: scale(0.95);
         }
 
         .character-card.selected {
-            transform: scale(1.06);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-giraffe { background-color: #fef5d4; color: #78350f; }
+        .card-panda { background-color: #fce2e6; color: #831843; }
+        .card-crocodile { background-color: #d7f5cb; color: #064e3b; }
+
+        .character-card img {
+            width: 68px;
+            height: 68px;
+            object-fit: contain;
+            margin-bottom: 4px;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .char-name {
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        .char-fruit {
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 8px;
+            border-radius: 99px;
+            margin-top: 4px;
+            pointer-events: none;
+        }
+
+        .legend-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+            background: #ffffff;
+            padding: 10px 12px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            width: 100%;
+            max-width: 340px;
+            border: 2px solid #fcd34d;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            color: #ffffff;
+            font-size: 22px;
+            padding: 12px 44px;
+            border-radius: 999px;
+            border: 2px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            touch-action: manipulation;
+            background: linear-gradient(90deg, #f59e0b, #f97316);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        .btn-secondary {
+            font-size: 15px;
+            padding: 10px 24px;
+            border-radius: 999px;
+            border: 2px solid #e2e8f0;
+            background: #ffffff;
+            color: #334155;
+            cursor: pointer;
+            touch-action: manipulation;
+            margin-top: 8px;
+        }
+
+        .score-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 14px;
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 18px;
+            border: 2px solid #ffe4e6;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+        }
+
+        .footer-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding: 0 6px;
+            font-size: 12px;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .btn-pause {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #334155;
+            cursor: pointer;
+            touch-action: manipulation;
         }
     </style>
 </head>
-<body id="pageBody" class="bg-[#fef5d4] min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
+<body id="pageBody">
 
-    <div class="relative w-full max-w-xl flex flex-col items-center">
-
-        <!-- Banner Logo Dinamico SOYAJOY -->
-        <div id="brandBanner" class="w-full mb-2.5 rounded-2xl overflow-hidden shadow-md border-2 border-white flex items-center justify-center bg-[#fef5d4] py-1.5 px-4">
-            <img id="logoImage" src="logo-jirafa.png" alt="SOYAJOY" class="max-h-[78px] sm:max-h-[92px] w-auto object-contain pointer-events-none">
+    <div class="container">
+        <!-- Logo Superior -->
+        <div id="brandBanner" class="brand-banner">
+            <img id="logoImage" src="logo-jirafa.png" alt="SOYAJOY">
         </div>
 
-        <!-- Barra Superiore Statistiche (Vite, Serie, Punti) -->
-        <div class="w-full flex items-center justify-between mb-2.5 px-4 py-2 rounded-2xl glass-panel">
-            <div class="flex items-center space-x-2">
-                <div class="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-wider">Vite</div>
-                <div id="livesContainer" class="flex space-x-1 text-xl sm:text-2xl">
+        <!-- Barra de Estadísticas -->
+        <div class="stats-bar">
+            <div class="lives-box">
+                <span class="stat-label">Vite</span>
+                <div id="livesContainer" class="lives-hearts">
                     <span>❤️</span><span>❤️</span><span>❤️</span>
                 </div>
             </div>
-
-            <div class="flex items-center space-x-4">
-                <div class="text-center">
-                    <div class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Serie</div>
-                    <div id="comboDisplay" class="text-base sm:text-lg font-game text-purple-600">x1</div>
+            <div class="score-group">
+                <div>
+                    <div class="stat-label">Serie</div>
+                    <div id="comboDisplay" class="combo-val font-game">x1</div>
                 </div>
-                <div class="text-right">
-                    <div class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Punti</div>
-                    <div id="scoreDisplay" class="text-xl sm:text-2xl font-game text-emerald-600">0</div>
+                <div>
+                    <div class="stat-label">Punti</div>
+                    <div id="scoreDisplay" class="score-val font-game">0</div>
                 </div>
             </div>
         </div>
 
-        <!-- Area Canvas di Gioco -->
-        <div id="canvasWrapper" class="relative w-full aspect-[4/4.5] max-h-[64vh] min-h-[340px]">
-            <canvas id="gameCanvas" class="w-full h-full block cursor-pointer"></canvas>
+        <!-- Área de Juego -->
+        <div id="canvasWrapper" class="canvas-wrapper">
+            <canvas id="gameCanvas"></canvas>
 
-            <!-- Schermata Iniziale: Scelta Animale -->
-            <div id="startScreen" style="display: flex;" class="absolute inset-0 flex-col items-center justify-center p-4 sm:p-6 text-center glass-panel rounded-3xl z-30 overflow-y-auto">
-                <h1 id="welcomeTitle" class="text-2xl sm:text-3xl font-game text-amber-600 mb-1">
-                    Ciao! Scegli il tuo amico!
-                </h1>
-                <p class="text-xs sm:text-sm text-slate-600 mb-4 max-w-sm font-semibold">
-                    Tocca un animale per giocare e mangiare la sua frutta preferita e la soia
-                </p>
+            <!-- Pantalla Inicial -->
+            <div id="startScreen" class="overlay-screen">
+                <h1 id="welcomeTitle" class="title-main font-game">Ciao! Scegli il tuo amico!</h1>
+                <p class="subtitle-main">Tocca un animale per giocare e mangiare la sua frutta preferita e la soia</p>
 
-                <!-- 3 Schede Personaggi -->
-                <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5 w-full max-w-md mb-5">
-                    <!-- Giraffa -->
-                    <button type="button" data-char="giraffe" onclick="handleSelectChar('giraffe')" class="character-card selected btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#fef5d4] border-4 border-amber-500 text-amber-900">
-                        <img src="jirafa.png" alt="Giraffa" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl pointer-events-none">
-                        <span class="font-game text-xs sm:text-sm pointer-events-none">Giraffa</span>
-                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm pointer-events-none">🍑 Pesca</span>
+                <div class="char-grid">
+                    <button type="button" data-char="giraffe" onclick="handleSelectChar('giraffe')" class="character-card card-giraffe selected" style="border-color: #f59e0b;">
+                        <img src="jirafa.png" alt="Giraffa">
+                        <span class="char-name font-game">Giraffa</span>
+                        <span class="char-fruit">🍑 Pesca</span>
                     </button>
 
-                    <!-- Panda -->
-                    <button type="button" data-char="panda" onclick="handleSelectChar('panda')" class="character-card btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#fce2e6] border-4 border-transparent text-pink-900">
-                        <img src="panda.png" alt="Panda" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl pointer-events-none">
-                        <span class="font-game text-xs sm:text-sm pointer-events-none">Panda</span>
-                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm pointer-events-none">🍓 Fragola</span>
+                    <button type="button" data-char="panda" onclick="handleSelectChar('panda')" class="character-card card-panda">
+                        <img src="panda.png" alt="Panda">
+                        <span class="char-name font-game">Panda</span>
+                        <span class="char-fruit">🍓 Fragola</span>
                     </button>
 
-                    <!-- Coccodrillo -->
-                    <button type="button" data-char="crocodile" onclick="handleSelectChar('crocodile')" class="character-card btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#d7f5cb] border-4 border-transparent text-emerald-900">
-                        <img src="cocodrilo.png" alt="Coccodrillo" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl pointer-events-none">
-                        <span class="font-game text-xs sm:text-sm pointer-events-none">Coccodrillo</span>
-                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm pointer-events-none">🍋 Limone</span>
+                    <button type="button" data-char="crocodile" onclick="handleSelectChar('crocodile')" class="character-card card-crocodile">
+                        <img src="cocodrilo.png" alt="Coccodrillo">
+                        <span class="char-name font-game">Coccodrillo</span>
+                        <span class="char-fruit">🍋 Limone</span>
                     </button>
                 </div>
 
-                <!-- Legenda -->
-                <div id="legendBox" class="grid grid-cols-2 gap-2 text-xs text-left bg-white/90 p-3 rounded-2xl mb-5 w-full max-w-sm border-2 border-amber-300">
-                    <div class="flex items-center space-x-1.5">
-                        <span id="legendGoodEmoji" class="text-lg">🍑 🌱</span>
-                        <span class="font-bold text-emerald-600">+10 Punti</span>
+                <div id="legendBox" class="legend-box">
+                    <div class="legend-item" style="color: #059669;">
+                        <span id="legendGoodEmoji" style="font-size: 18px;">🍑 🌱</span>
+                        <span>+10 Punti</span>
                     </div>
-                    <div class="flex items-center space-x-1.5">
-                        <span class="text-lg">🦠 🪰</span>
-                        <span class="font-bold text-rose-500">Evita (-1 Vita)</span>
+                    <div class="legend-item" style="color: #e11d48;">
+                        <span style="font-size: 18px;">🦠 🪰</span>
+                        <span>Evita (-1 Vita)</span>
                     </div>
                 </div>
 
-                <button type="button" id="startBtn" onclick="startGame()" class="btn-bounce bg-gradient-to-r from-amber-500 to-orange-500 text-white font-game text-xl sm:text-2xl py-3 px-12 rounded-full shadow-lg border-2 border-white">
+                <button type="button" id="startBtn" onclick="startGame()" class="btn-primary font-game">
                     GIOCA! 🎮
                 </button>
             </div>
 
-            <!-- Schermata Pausa -->
-            <div id="pauseScreen" style="display: none;" class="absolute inset-0 flex-col items-center justify-center p-6 text-center glass-panel rounded-3xl z-30">
-                <div class="text-5xl mb-2">⏸️</div>
-                <h2 class="text-3xl sm:text-4xl font-game text-sky-500 mb-4">Gioco in Pausa</h2>
-                <button type="button" id="resumeBtn" onclick="togglePause()" class="btn-bounce bg-sky-400 hover:bg-sky-500 text-white font-game text-lg py-3 px-8 rounded-full shadow-md mb-3 border-2 border-white">
+            <!-- Pantalla Pausa -->
+            <div id="pauseScreen" class="overlay-screen" style="display: none;">
+                <div style="font-size: 46px; margin-bottom: 8px;">⏸️</div>
+                <h2 class="font-game" style="font-size: 30px; color: #0ea5e9; margin-bottom: 16px;">Gioco in Pausa</h2>
+                <button type="button" onclick="togglePause()" class="btn-primary font-game" style="background: #0ea5e9; font-size: 18px; padding: 12px 32px;">
                     Continua ▶️
                 </button>
-                <button type="button" id="changeCharPauseBtn" onclick="showCharacterSelection()" class="btn-bounce bg-amber-100 hover:bg-amber-200 text-amber-800 font-game text-sm py-2.5 px-6 rounded-full mb-2">
+                <button type="button" onclick="showCharacterSelection()" class="btn-secondary font-game">
                     Cambia Animale
                 </button>
-                <button type="button" id="restartPauseBtn" onclick="startGame()" class="btn-bounce bg-slate-200 hover:bg-slate-300 text-slate-700 font-game text-sm py-2 px-5 rounded-full">
+                <button type="button" onclick="startGame()" class="btn-secondary font-game">
                     Ricomincia 🔄
                 </button>
             </div>
 
-            <!-- Schermata Fine del Gioco -->
-            <div id="gameOverScreen" style="display: none;" class="absolute inset-0 flex-col items-center justify-center p-6 text-center glass-panel rounded-3xl z-30">
-                <div class="text-5xl mb-2">🌟</div>
-                <h2 class="text-3xl sm:text-4xl font-game text-rose-500 mb-1">Bravissimo!</h2>
-                <p id="gameOverSubtitle" class="text-sm text-slate-600 mb-4 font-semibold">Ottimo lavoro!</p>
+            <!-- Pantalla Fin del Juego -->
+            <div id="gameOverScreen" class="overlay-screen" style="display: none;">
+                <div style="font-size: 46px; margin-bottom: 6px;">🌟</div>
+                <h2 class="font-game" style="font-size: 32px; color: #f43f5e; margin-bottom: 4px;">Bravissimo!</h2>
+                <p id="gameOverSubtitle" style="font-size: 13px; color: #475569; margin-bottom: 14px; font-weight: 600;">Ottimo lavoro!</p>
 
-                <div class="bg-white/90 rounded-2xl p-4 w-full max-w-xs mb-5 border-2 border-rose-100 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-400">PUNTEGGIO FINALE</span>
-                        <span id="finalScore" class="font-game text-2xl text-emerald-600">0</span>
+                <div class="score-card">
+                    <div class="score-row">
+                        <span class="stat-label">Punteggio Finale</span>
+                        <span id="finalScore" class="font-game" style="font-size: 24px; color: #059669;">0</span>
                     </div>
-                    <div class="flex justify-between items-center border-t pt-2 border-slate-100">
-                        <span class="text-xs font-bold text-slate-400">IL TUO RECORD</span>
-                        <span id="highScore" class="font-game text-2xl text-purple-600">0</span>
+                    <div class="score-row" style="border-top: 1px solid #f1f5f9; margin-top: 6px; padding-top: 8px;">
+                        <span class="stat-label">Il Tuo Record</span>
+                        <span id="highScore" class="font-game" style="font-size: 24px; color: #9333ea;">0</span>
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row gap-2.5">
-                    <button type="button" id="restartBtn" onclick="startGame()" class="btn-bounce bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-game text-lg py-3 px-7 rounded-full shadow-lg border-2 border-white">
-                        Gioca Ancora 🔄
-                    </button>
-                    <button type="button" id="changeCharOverBtn" onclick="showCharacterSelection()" class="btn-bounce bg-white hover:bg-slate-50 text-slate-700 font-game text-base py-3 px-5 rounded-full shadow border-2 border-slate-200">
-                        Cambia Amico
-                    </button>
-                </div>
+                <button type="button" onclick="startGame()" class="btn-primary font-game" style="background: linear-gradient(90deg, #10b981, #14b8a6); font-size: 18px; padding: 12px 30px;">
+                    Gioca Ancora 🔄
+                </button>
+                <button type="button" onclick="showCharacterSelection()" class="btn-secondary font-game">
+                    Cambia Amico
+                </button>
             </div>
         </div>
 
-        <!-- Barra Comandi Inferiore -->
-        <div class="w-full flex justify-between items-center mt-2.5 px-2 text-xs text-slate-600 font-semibold">
+        <!-- Barra Inferior -->
+        <div class="footer-bar">
             <span>Muovi con il dito, il mouse o le frecce ⬅️ ➡️</span>
-            <button type="button" id="pauseBtn" onclick="togglePause()" class="text-slate-700 hover:text-slate-900 font-bold bg-white/85 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm cursor-pointer">
-                Pausa ⏸️
-            </button>
+            <button type="button" onclick="togglePause()" class="btn-pause">Pausa ⏸️</button>
         </div>
     </div>
 
@@ -252,11 +497,12 @@
                 bannerBg: '#fef5d4',
                 fruitEmoji: '🍑',
                 fruitName: 'pesche',
-                pageBg: 'bg-[#fef5d4]',
+                pageBg: '#fef5d4',
                 canvasGradient: ['#fef9e3', '#fdebc8'],
-                titleColor: 'text-amber-600',
-                btnGradient: 'from-amber-500 to-orange-500',
-                legendBorder: 'border-amber-300',
+                titleColor: '#d97706',
+                btnGradient: 'linear-gradient(90deg, #f59e0b, #f97316)',
+                borderColor: '#f59e0b',
+                legendBorder: '#fcd34d',
                 goodItems: [
                     { emoji: '🍑', name: 'Pesca' },
                     { emoji: '🌱', name: 'Soia' }
@@ -271,11 +517,12 @@
                 bannerBg: '#fce2e6',
                 fruitEmoji: '🍓',
                 fruitName: 'fragole',
-                pageBg: 'bg-[#fce2e6]',
+                pageBg: '#fce2e6',
                 canvasGradient: ['#fce8eb', '#fad4db'],
-                titleColor: 'text-pink-600',
-                btnGradient: 'from-pink-500 to-rose-500',
-                legendBorder: 'border-pink-300',
+                titleColor: '#db2777',
+                btnGradient: 'linear-gradient(90deg, #ec4899, #f43f5e)',
+                borderColor: '#ec4899',
+                legendBorder: '#f9a8d4',
                 goodItems: [
                     { emoji: '🍓', name: 'Fragola' },
                     { emoji: '🌱', name: 'Soia' }
@@ -290,11 +537,12 @@
                 bannerBg: '#d7f5cb',
                 fruitEmoji: '🍋',
                 fruitName: 'limoni',
-                pageBg: 'bg-[#d7f5cb]',
+                pageBg: '#d7f5cb',
                 canvasGradient: ['#e2f8d8', '#c7f0b6'],
-                titleColor: 'text-emerald-600',
-                btnGradient: 'from-emerald-500 to-green-600',
-                legendBorder: 'border-emerald-300',
+                titleColor: '#059669',
+                btnGradient: 'linear-gradient(90deg, #10b981, #16a34a)',
+                borderColor: '#10b981',
+                legendBorder: '#6ee7b7',
                 goodItems: [
                     { emoji: '🍋', name: 'Limone' },
                     { emoji: '🌱', name: 'Soia' }
@@ -376,14 +624,146 @@
 
             brandBanner.style.backgroundColor = cfg.bannerBg;
             logoImage.src = cfg.logoSrc;
+            pageBody.style.backgroundColor = cfg.pageBg;
+            canvas.style.background = `linear-gradient(180deg, ${cfg.canvasGradient[0]} 0%, ${cfg.canvasGradient[1]} 100%)`;
 
-            pageBody.className = `${cfg.pageBg} min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden transition-colors duration-300`;
-            canvas.style.background = `linear-gradient(180deg, ${cfg.canvasGradient[0]} 0\%,${cfg.canvasGradient[1]} 100%)`;
+            welcomeTitle.style.color = cfg.titleColor;
+            startBtn.style.background = cfg.btnGradient;
+            legendBox.style.borderColor = cfg.legendBorder;
+            legendGoodEmoji.textContent = `${cfg.fruitEmoji} 🌱`;
 
-            welcomeTitle.className = `text-2xl sm:text-3xl font-game ${cfg.titleColor} mb-1`;
-            startBtn.className = `btn-bounce bg-gradient-to-r ${cfg.btnGradient} text-white font-game text-xl sm:text-2xl py-3 px-12 rounded-full shadow-lg border-2 border-white`;
-            legendBox.className = `grid grid-cols-2 gap-2 text-xs text-left bg-white/90 p-3 rounded-2xl mb-5 w-full max-w-sm border-2 ${cfg.legendBorder}`;
-            legendGoodEmoji.textContent = `${cfg.fruitEmoji} 🌱`;  document.querySelectorAll('.character-card').forEach(card => { const isSelected = card.dataset.char === charKey; card.classList.toggle('selected', isSelected); card.classList.remove('border-amber-500', 'border-pink-500', 'border-emerald-500', 'border-transparent'); if (isSelected) { if (charKey === 'giraffe') card.classList.add('border-amber-500'); if (charKey === 'panda') card.classList.add('border-pink-500'); if (charKey === 'crocodile') card.classList.add('border-emerald-500'); } else { card.classList.add('border-transparent'); } });  resizeCanvas(); ctx.clearRect(0, 0, canvas.width, canvas.height); drawPlayer(0); }  function resizeCanvas() { const rect = canvasWrapper.getBoundingClientRect(); canvas.width = rect.width > 0 ? rect.width : 400; canvas.height = rect.height > 0 ? rect.height : 450;  player.width = Math.max(92, canvas.width * 0.25); player.height = player.width * 1.05; player.y = canvas.height - player.height - 10;  if (gameState === 'START') { player.x = canvas.width / 2 - player.width / 2; } else { clampPlayerPosition(); } }  window.addEventListener('resize', resizeCanvas);  window.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' \vert{}\vert{} e.key === 'a' \vert{}\vert{} e.key === 'A') keys.left = true; if (e.key === 'ArrowRight' \vert{}\vert{} e.key === 'd' \vert{}\vert{} e.key === 'D') keys.right = true; if (e.key === 'p' \vert{}\vert{} e.key === 'P') togglePause(); });  window.addEventListener('keyup', (e) => { if (e.key === 'ArrowLeft' \vert{}\vert{} e.key === 'a' \vert{}\vert{} e.key === 'A') keys.left = false; if (e.key === 'ArrowRight' \vert{}\vert{} e.key === 'd' \vert{}\vert{} e.key === 'D') keys.right = false; });  let isDragging = false;  function handlePointerMove(e) { if (gameState !== 'PLAYING') return; const rect = canvas.getBoundingClientRect(); const clientX = e.touches ? e.touches[0].clientX : e.clientX; const touchX = clientX - rect.left; player.x = touchX - player.width / 2; clampPlayerPosition(); }  canvas.addEventListener('mousedown', (e) => { isDragging = true; handlePointerMove(e); }); canvas.addEventListener('mousemove', (e) => { if (isDragging) handlePointerMove(e); }); window.addEventListener('mouseup', () => { isDragging = false; });  canvas.addEventListener('touchstart', (e) => { isDragging = true; handlePointerMove(e); }, { passive: true }); canvas.addEventListener('touchmove', handlePointerMove, { passive: true }); canvas.addEventListener('touchend', () => { isDragging = false; });  function clampPlayerPosition() { if (player.x < 0) player.x = 0; if (player.x > canvas.width - player.width) player.x = canvas.width - player.width; }  function spawnItem() { const cfg = CHARACTERS[selectedCharKey]; const isGood = Math.random() > 0.22;  let chosenTemplate; if (isGood) { chosenTemplate = Math.random() < 0.80 ? cfg.goodItems[0] : cfg.goodItems[1]; } else { chosenTemplate = BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)]; }  const size = isGood ? Math.max(38, canvas.width * 0.105) : Math.max(32, canvas.width * 0.085); const baseSpeed = isGood ? (115 + Math.random() * 35) : (105 + Math.random() * 25); const gentleProgression = Math.min(95, score * 0.8);  items.push({ x: Math.random() * (canvas.width - size), y: -size, size: size, speed: baseSpeed + gentleProgression, emoji: chosenTemplate.emoji, isGood: isGood, rotation: 0, rotSpeed: (Math.random() - 0.5) * 1.2 }); }  function createParticle(x, y, text, color) { particles.push({ x: x, y: y, text: text, color: color, opacity: 1.0, vy: -48 }); }  function drawPlayer(dt) { const cfg = CHARACTERS[selectedCharKey]; const img = loadedAnimalImgs[selectedCharKey]; ctx.save();  ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.beginPath(); ctx.ellipse( player.x + player.width / 2, player.y + player.height * 0.96, player.width * 0.38, player.height * 0.06, 0, 0, Math.PI * 2 ); ctx.fill();  if (player.eatScale > 0) { player.eatScale = Math.max(0, player.eatScale - dt * 3.5); } const bounce = Math.sin(player.eatScale * Math.PI) * 0.14; const scaleX = 1 + bounce; const scaleY = 1 - bounce * 0.5;  ctx.translate(player.x + player.width / 2, player.y + player.height); ctx.scale(scaleX, scaleY);  if (img && img.complete && img.naturalWidth > 0) { ctx.drawImage(img, -player.width / 2, -player.height, player.width, player.height); } else { ctx.font = `${player.width * 0.85}px sans-serif`;
+            document.querySelectorAll('.character-card').forEach(card => {
+                const isSelected = card.dataset.char === charKey;
+                card.classList.toggle('selected', isSelected);
+                card.style.borderColor = isSelected ? cfg.borderColor : 'transparent';
+            });
+
+            resizeCanvas();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer(0);
+        }
+
+        function resizeCanvas() {
+            const rect = canvasWrapper.getBoundingClientRect();
+            canvas.width = rect.width > 0 ? rect.width : 400;
+            canvas.height = rect.height > 0 ? rect.height : 440;
+
+            player.width = Math.max(92, canvas.width * 0.25);
+            player.height = player.width * 1.05;
+            player.y = canvas.height - player.height - 10;
+
+            if (gameState === 'START') {
+                player.x = canvas.width / 2 - player.width / 2;
+            } else {
+                clampPlayerPosition();
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+            if (e.key === 'p' || e.key === 'P') togglePause();
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
+        });
+
+        let isDragging = false;
+
+        function handlePointerMove(e) {
+            if (gameState !== 'PLAYING') return;
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const touchX = clientX - rect.left;
+            player.x = touchX - player.width / 2;
+            clampPlayerPosition();
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDragging = true; handlePointerMove(e); });
+        canvas.addEventListener('mousemove', (e) => { if (isDragging) handlePointerMove(e); });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        canvas.addEventListener('touchstart', (e) => { isDragging = true; handlePointerMove(e); }, { passive: true });
+        canvas.addEventListener('touchmove', handlePointerMove, { passive: true });
+        canvas.addEventListener('touchend', () => { isDragging = false; });
+
+        function clampPlayerPosition() {
+            if (player.x < 0) player.x = 0;
+            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+        }
+
+        function spawnItem() {
+            const cfg = CHARACTERS[selectedCharKey];
+            const isGood = Math.random() > 0.22;
+
+            let chosenTemplate;
+            if (isGood) {
+                chosenTemplate = Math.random() < 0.80 ? cfg.goodItems[0] : cfg.goodItems[1];
+            } else {
+                chosenTemplate = BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)];
+            }
+
+            const size = isGood ? Math.max(38, canvas.width * 0.105) : Math.max(32, canvas.width * 0.085);
+            const baseSpeed = isGood ? (115 + Math.random() * 35) : (105 + Math.random() * 25);
+            const gentleProgression = Math.min(95, score * 0.8);
+
+            items.push({
+                x: Math.random() * (canvas.width - size),
+                y: -size,
+                size: size,
+                speed: baseSpeed + gentleProgression,
+                emoji: chosenTemplate.emoji,
+                isGood: isGood,
+                rotation: 0,
+                rotSpeed: (Math.random() - 0.5) * 1.2
+            });
+        }
+
+        function createParticle(x, y, text, color) {
+            particles.push({
+                x: x,
+                y: y,
+                text: text,
+                color: color,
+                opacity: 1.0,
+                vy: -48
+            });
+        }
+
+        function drawPlayer(dt) {
+            const cfg = CHARACTERS[selectedCharKey];
+            const img = loadedAnimalImgs[selectedCharKey];
+            ctx.save();
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.beginPath();
+            ctx.ellipse(
+                player.x + player.width / 2,
+                player.y + player.height * 0.96,
+                player.width * 0.38,
+                player.height * 0.06,
+                0, 0, Math.PI * 2
+            );
+            ctx.fill();
+
+            if (player.eatScale > 0) {
+                player.eatScale = Math.max(0, player.eatScale - dt * 3.5);
+            }
+            const bounce = Math.sin(player.eatScale * Math.PI) * 0.14;
+            const scaleX = 1 + bounce;
+            const scaleY = 1 - bounce * 0.5;
+
+            ctx.translate(player.x + player.width / 2, player.y + player.height);
+            ctx.scale(scaleX, scaleY);
+
+            if (img && img.complete && img.naturalWidth > 0) {
+                ctx.drawImage(img, -player.width / 2, -player.height, player.width, player.height);
+            } else {
+                ctx.font = `${player.width * 0.85}px sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'bottom';
                 ctx.fillText(cfg.fallbackEmoji, 0, 0);
@@ -397,4 +777,48 @@
                 ctx.save();
                 ctx.translate(item.x + item.size / 2, item.y + item.size / 2);
                 ctx.rotate(item.rotation);
-                ctx.font = `${item.size}px sans-
+                ctx.font = `${item.size}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(item.emoji, 0, 0);
+                ctx.restore();
+            });
+        }
+
+        function drawParticles(dt) {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.y += p.vy * dt;
+                p.opacity -= 1.0 * dt;
+
+                if (p.opacity <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, p.opacity);
+                ctx.font = 'bold 22px sans-serif';
+                ctx.fillStyle = p.color;
+                ctx.textAlign = 'center';
+                ctx.fillText(p.text, p.x, p.y);
+                ctx.restore();
+            }
+        }
+
+        function update(dt) {
+            if (keys.left) player.x -= player.speed * dt;
+            if (keys.right) player.x += player.speed * dt;
+            clampPlayerPosition();
+
+            spawnTimer += dt * 1000;
+            const currentInterval = Math.max(920, BASE_SPAWN_INTERVAL - (score * 4));
+            if (spawnTimer >= currentInterval) {
+                spawnItem();
+                spawnTimer = 0;
+            }
+
+            for (let i = items.length - 1; i >= 0; i--) {
+                const item = items[i];
+                item.y += item.speed * dt;
+                item.rotation += item.rotSpeed * dt
