@@ -12,7 +12,7 @@
             font-family: 'Quicksand', sans-serif;
             touch-action: none;
             user-select: none;
-            transition: background-color 0.4s ease;
+            transition: background-color 0.3s ease;
         }
 
         .font-game {
@@ -20,20 +20,19 @@
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(12px);
-            border: 3px solid rgba(255, 255, 255, 0.85);
+            border: 3px solid rgba(255, 255, 255, 0.9);
             box-shadow: 0 18px 36px rgba(0, 0, 0, 0.08);
         }
 
         #gameCanvas {
             border-radius: 1.5rem;
             box-shadow: 0 15px 35px rgba(100, 116, 139, 0.18);
-            transition: background 0.4s ease;
         }
 
         .btn-bounce {
-            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s ease, border-color 0.2s ease;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.2s ease;
         }
         .btn-bounce:hover {
             transform: scale(1.04);
@@ -50,16 +49,15 @@
 </head>
 <body id="pageBody" class="bg-[#fef5d4] min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
 
-    <!-- Contenedor Principal -->
     <div class="relative w-full max-w-xl flex flex-col items-center">
 
-        <!-- Banner Logo Dinámico SOYAJOY (Arriba en el color del animal) -->
-        <div id="brandBanner" class="w-full mb-2.5 rounded-2xl overflow-hidden shadow-md border-2 border-white transition-all duration-300 flex items-center justify-center py-1">
-            <!-- SVG del logo exacto actualizado dinámicamente -->
+        <!-- Banner Logo Superior (Carga tu imagen real de logo) -->
+        <div id="brandBanner" class="w-full mb-2.5 rounded-2xl overflow-hidden shadow-md border-2 border-white flex items-center justify-center bg-[#fef5d4] py-1.5 px-4">
+            <img id="logoImage" src="logo-jirafa.png" alt="SOYAJOY" class="max-h-[78px] sm:max-h-[92px] w-auto object-contain">
         </div>
 
         <!-- Barra Superior de Estadísticas -->
-        <div id="statsBar" class="w-full flex items-center justify-between mb-2.5 px-4 py-2 rounded-2xl glass-panel">
+        <div class="w-full flex items-center justify-between mb-2.5 px-4 py-2 rounded-2xl glass-panel">
             <div class="flex items-center space-x-2">
                 <div class="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-wider">Vidas</div>
                 <div id="livesContainer" class="flex space-x-1 text-xl sm:text-2xl">
@@ -80,43 +78,43 @@
         </div>
 
         <!-- Área Canvas de Juego -->
-        <div class="relative w-full aspect-[4/4.6] max-h-[65vh]">
+        <div id="canvasWrapper" class="relative w-full aspect-[4/4.5] max-h-[64vh] min-h-[340px]">
             <canvas id="gameCanvas" class="w-full h-full block cursor-pointer"></canvas>
 
-            <!-- Pantalla Inicial: Selección Directa de los 3 Animales -->
+            <!-- Pantalla Inicial: Selección Directa -->
             <div id="startScreen" class="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center glass-panel rounded-3xl z-20 overflow-y-auto">
-                <h1 id="welcomeTitle" class="text-2xl sm:text-3xl font-game text-amber-600 mb-1 drop-shadow-sm">
+                <h1 id="welcomeTitle" class="text-2xl sm:text-3xl font-game text-amber-600 mb-1">
                     ¡Elige tu amigo!
                 </h1>
                 <p class="text-xs sm:text-sm text-slate-600 mb-4 max-w-sm font-semibold">
                     Toca un animal para jugar y comer su fruta favorita y soja
                 </p>
 
-                <!-- Cuadrícula con los 3 Animales -->
+                <!-- 3 Tarjetas con tus imágenes reales -->
                 <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5 w-full max-w-md mb-5">
                     <!-- Jirafa -->
                     <button type="button" data-char="giraffe" class="character-card selected btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#fef5d4] border-4 border-amber-500 text-amber-900">
-                        <div id="cardIconGiraffe" class="w-16 h-16 sm:w-20 sm:h-20 mb-1 flex items-center justify-center"></div>
+                        <img src="jirafa.png" alt="Jirafa" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
                         <span class="font-game text-xs sm:text-sm">Jirafa</span>
                         <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍑 Melocotón</span>
                     </button>
 
                     <!-- Oso Panda -->
                     <button type="button" data-char="panda" class="character-card btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#fce2e6] border-4 border-transparent text-pink-900">
-                        <div id="cardIconPanda" class="w-16 h-16 sm:w-20 sm:h-20 mb-1 flex items-center justify-center"></div>
+                        <img src="panda.png" alt="Oso Panda" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
                         <span class="font-game text-xs sm:text-sm">Oso Panda</span>
                         <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍓 Fresas</span>
                     </button>
 
-                    <!-- Coccodrilo -->
+                    <!-- Cocodrilo -->
                     <button type="button" data-char="crocodile" class="character-card btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#d7f5cb] border-4 border-transparent text-emerald-900">
-                        <div id="cardIconCrocodile" class="w-16 h-16 sm:w-20 sm:h-20 mb-1 flex items-center justify-center"></div>
+                        <img src="cocodrilo.png" alt="Cocodrilo" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
                         <span class="font-game text-xs sm:text-sm">Cocodrilo</span>
                         <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍋 Limón</span>
                     </button>
                 </div>
 
-                <!-- Leyenda Dinámica -->
+                <!-- Leyenda -->
                 <div id="legendBox" class="grid grid-cols-2 gap-2 text-xs text-left bg-white/90 p-3 rounded-2xl mb-5 w-full max-w-sm border-2 border-amber-300">
                     <div class="flex items-center space-x-1.5">
                         <span id="legendGoodEmoji" class="text-lg">🍑 🌱</span>
@@ -128,22 +126,22 @@
                     </div>
                 </div>
 
-                <button id="startBtn" class="btn-bounce bg-gradient-to-r from-amber-500 to-orange-500 text-white font-game text-xl sm:text-2xl py-3 px-12 rounded-full shadow-lg border-2 border-white">
+                <button type="button" id="startBtn" class="btn-bounce bg-gradient-to-r from-amber-500 to-orange-500 text-white font-game text-xl sm:text-2xl py-3 px-12 rounded-full shadow-lg border-2 border-white">
                     ¡JUGAR! 🎮
                 </button>
             </div>
 
-            <!-- Pantalla de Pausa -->
+            <!-- Pantalla Pausa -->
             <div id="pauseScreen" class="hidden absolute inset-0 flex flex-col items-center justify-center p-6 text-center glass-panel rounded-3xl z-20">
                 <div class="text-5xl mb-2">⏸️</div>
                 <h2 class="text-3xl sm:text-4xl font-game text-sky-500 mb-4">Juego en Pausa</h2>
-                <button id="resumeBtn" class="btn-bounce bg-sky-400 hover:bg-sky-500 text-white font-game text-lg py-3 px-8 rounded-full shadow-md mb-3 border-2 border-white">
+                <button type="button" id="resumeBtn" class="btn-bounce bg-sky-400 hover:bg-sky-500 text-white font-game text-lg py-3 px-8 rounded-full shadow-md mb-3 border-2 border-white">
                     Continuar ▶️
                 </button>
-                <button id="changeCharPauseBtn" class="btn-bounce bg-amber-100 hover:bg-amber-200 text-amber-800 font-game text-sm py-2.5 px-6 rounded-full mb-2">
+                <button type="button" id="changeCharPauseBtn" class="btn-bounce bg-amber-100 hover:bg-amber-200 text-amber-800 font-game text-sm py-2.5 px-6 rounded-full mb-2">
                     Cambiar Animal
                 </button>
-                <button id="restartPauseBtn" class="btn-bounce bg-slate-200 hover:bg-slate-300 text-slate-700 font-game text-sm py-2 px-5 rounded-full">
+                <button type="button" id="restartPauseBtn" class="btn-bounce bg-slate-200 hover:bg-slate-300 text-slate-700 font-game text-sm py-2 px-5 rounded-full">
                     Reiniciar 🔄
                 </button>
             </div>
@@ -166,10 +164,10 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-2.5">
-                    <button id="restartBtn" class="btn-bounce bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-game text-lg py-3 px-7 rounded-full shadow-lg border-2 border-white">
+                    <button type="button" id="restartBtn" class="btn-bounce bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-game text-lg py-3 px-7 rounded-full shadow-lg border-2 border-white">
                         Jugar de Nuevo 🔄
                     </button>
-                    <button id="changeCharOverBtn" class="btn-bounce bg-white hover:bg-slate-50 text-slate-700 font-game text-base py-3 px-5 rounded-full shadow border-2 border-slate-200">
+                    <button type="button" id="changeCharOverBtn" class="btn-bounce bg-white hover:bg-slate-50 text-slate-700 font-game text-base py-3 px-5 rounded-full shadow border-2 border-slate-200">
                         Cambiar Animal
                     </button>
                 </div>
@@ -179,20 +177,21 @@
         <!-- Barra de Controles Inferior -->
         <div class="w-full flex justify-between items-center mt-2.5 px-2 text-xs text-slate-600 font-semibold">
             <span>Mueve con el dedo, el ratón o las flechas ⬅️ ➡️</span>
-            <button id="pauseBtn" class="text-slate-700 hover:text-slate-900 font-bold bg-white/85 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+            <button type="button" id="pauseBtn" class="text-slate-700 hover:text-slate-900 font-bold bg-white/85 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
                 Pausa ⏸️
             </button>
         </div>
     </div>
 
     <script>
-        // --- Audio Web API ---
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        // --- Audio seguro ---
         let audioCtx = null;
-
         function initAudio() {
-            if (!audioCtx) audioCtx = new AudioContext();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            try {
+                const AC = window.AudioContext || window.webkitAudioContext;
+                if (AC && !audioCtx) audioCtx = new AC();
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            } catch (e) {}
         }
 
         function playSound(type) {
@@ -241,216 +240,15 @@
             } catch (e) {}
         }
 
-        // --- Generador del Logo SOYAJOY Exacto (Fiel a las imágenes adjuntas) ---
-        function buildSoyajoyLogoSVG(bgColor, scriptColor, blockColor) {
-            return `
-            <svg viewBox="0 0 420 138" class="w-full max-h-[82px] sm:max-h-[96px] block mx-auto" xmlns="http://www.w3.org/2000/svg">
-                <rect width="420" height="138" fill="${bgColor}"/>
-                <g transform="translate(45, 8)">
-                    <!-- S manuscrita con bucle inferior izquierdo -->
-                    <path d="M 62 28 C 52 12, 24 14, 24 34 C 24 54, 66 64, 64 88 C 62 108, 30 108, 22 92 C 16 80, 26 66, 38 72 C 48 77, 44 94, 26 95 L 10 95"
-                          fill="none" stroke="${scriptColor}" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-
-                    <!-- O gruesa redondeada -->
-                    <rect x="82" y="38" width="26" height="44" rx="12" fill="none" stroke="${blockColor}" stroke-width="11"/>
-
-                    <!-- Y gruesa -->
-                    <path d="M 122 33 L 136 62 L 150 33 M 136 62 L 136 86"
-                          fill="none" stroke="${blockColor}" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter"/>
-
-                    <!-- A inclinada con travesaño superior -->
-                    <path d="M 155 33 L 188 31 M 161 82 L 172 33 L 182 82 M 164 67 L 179 67"
-                          fill="none" stroke="${blockColor}" stroke-width="10.5" stroke-linecap="butt" stroke-linejoin="miter"/>
-
-                    <!-- j manuscrita con gran bucle inferior -->
-                    <path d="M 218 42 C 218 24, 198 24, 198 44 C 198 58, 212 58, 216 44 L 196 116 C 190 134, 164 134, 164 112 C 164 88, 194 74, 232 68"
-                          fill="none" stroke="${scriptColor}" stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>
-
-                    <!-- O derecha -->
-                    <rect x="242" y="31" width="26" height="44" rx="12" fill="none" stroke="${blockColor}" stroke-width="11"/>
-
-                    <!-- Y derecha -->
-                    <path d="M 282 24 L 296 54 L 310 24 M 296 54 L 296 78"
-                          fill="none" stroke="${blockColor}" stroke-width="11" stroke-linecap="butt" stroke-linejoin="miter"/>
-                </g>
-            </svg>`;
-        }
-
-        // --- Ilustraciones Vectoriales de los 3 Animales (Para tarjetas y canvas) ---
-        const ANIMAL_SVGS = {
-            giraffe: `
-            <svg viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
-                <!-- Cola -->
-                <path d="M 106 112 Q 122 104 126 94" stroke="#e59424" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <ellipse cx="127" cy="91" rx="5" ry="7" transform="rotate(20 127 91)" fill="#b35916"/>
-                <!-- Patas -->
-                <rect x="94" y="124" width="11" height="28" rx="3" fill="#d98218"/>
-                <rect x="94" y="146" width="11" height="6" rx="2" fill="#523224"/>
-                <rect x="108" y="124" width="12" height="29" rx="3" fill="#e59424"/>
-                <rect x="108" y="147" width="12" height="6" rx="2" fill="#523224"/>
-                <rect x="54" y="124" width="13" height="29" rx="3" fill="#e59424"/>
-                <rect x="54" y="147" width="13" height="6" rx="2" fill="#523224"/>
-                <!-- Pata delantera levantada -->
-                <path d="M 46 116 L 34 130 L 40 144" stroke="#e59424" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                <rect x="34" y="140" width="13" height="6" rx="2" transform="rotate(-15 34 140)" fill="#523224"/>
-                <!-- Cuerpo y Cuello -->
-                <path d="M 38 48 L 58 48 L 66 94 Q 95 90 112 104 Q 124 116 115 132 Q 95 142 62 136 Q 40 130 38 104 Z" fill="#e59424"/>
-                <!-- Manchas marrones -->
-                <circle cx="45" cy="60" r="4.5" fill="#b35916"/>
-                <circle cx="54" cy="70" r="3.5" fill="#b35916"/>
-                <ellipse cx="47" cy="82" rx="6" ry="5" fill="#b35916"/>
-                <ellipse cx="62" cy="88" rx="7" ry="6" fill="#b35916"/>
-                <ellipse cx="52" cy="105" rx="8" ry="7" fill="#b35916"/>
-                <ellipse cx="74" cy="108" rx="9" ry="7" fill="#b35916"/>
-                <ellipse cx="94" cy="104" rx="8" ry="6" fill="#b35916"/>
-                <ellipse cx="86" cy="122" rx="9" ry="6" fill="#b35916"/>
-                <ellipse cx="66" cy="124" rx="7" ry="5" fill="#b35916"/>
-                <ellipse cx="105" cy="118" rx="6" ry="7" fill="#b35916"/>
-                <!-- Cuernos (osiconos) -->
-                <line x1="40" y1="22" x2="36" y2="10" stroke="#e59424" stroke-width="4.5" stroke-linecap="round"/>
-                <circle cx="35" cy="8" r="5.5" fill="#b35916"/>
-                <line x1="56" y1="22" x2="60" y2="10" stroke="#e59424" stroke-width="4.5" stroke-linecap="round"/>
-                <circle cx="61" cy="8" r="5.5" fill="#b35916"/>
-                <!-- Orejas -->
-                <ellipse cx="24" cy="24" rx="10" ry="5.5" transform="rotate(25 24 24)" fill="#e59424"/>
-                <ellipse cx="24" cy="25" rx="7" ry="3.5" transform="rotate(25 24 25)" fill="#f4b3b3"/>
-                <ellipse cx="72" cy="24" rx="10" ry="5.5" transform="rotate(-25 72 24)" fill="#e59424"/>
-                <ellipse cx="72" cy="25" rx="7" ry="3.5" transform="rotate(-25 72 25)" fill="#f4b3b3"/>
-                <!-- Cabeza -->
-                <ellipse cx="48" cy="36" rx="25" ry="20" fill="#e59424"/>
-                <!-- Mancha frente -->
-                <path d="M 43 17 Q 48 30 53 17 Z" fill="#b35916"/>
-                <!-- Hocico -->
-                <ellipse cx="48" cy="43" rx="21" ry="13" fill="#b35916"/>
-                <!-- Orificios nasales -->
-                <ellipse cx="43" cy="38" rx="2.5" ry="1.5" transform="rotate(20 43 38)" fill="#523224"/>
-                <ellipse cx="53" cy="38" rx="2.5" ry="1.5" transform="rotate(-20 53 38)" fill="#523224"/>
-                <!-- Sonrisa -->
-                <path d="M 41 46 Q 48 51 55 46" stroke="#3b2014" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                <!-- Ojo guiñando izquierdo -->
-                <path d="M 34 31 Q 38 26 42 31" stroke="#29170e" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-                <!-- Ojo abierto derecho -->
-                <circle cx="58" cy="30" r="4.8" fill="#1c1917"/>
-                <circle cx="59.5" cy="28.5" r="1.6" fill="#ffffff"/>
-            </svg>`,
-
-            panda: `
-            <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-                <!-- Orejas -->
-                <circle cx="58" cy="24" r="14" fill="#1c1917"/>
-                <circle cx="116" cy="32" r="14" fill="#1c1917"/>
-                <!-- Cuerpo negro -->
-                <ellipse cx="82" cy="104" rx="40" ry="34" fill="#1c1917"/>
-                <!-- Barriga blanca -->
-                <ellipse cx="80" cy="110" rx="27" ry="24" fill="#ffffff"/>
-                <!-- Patas traseras sentadas -->
-                <g transform="translate(42, 118) rotate(-18)">
-                    <ellipse cx="0" cy="0" rx="16" ry="20" fill="#1c1917"/>
-                    <ellipse cx="0" cy="5" rx="8" ry="9" fill="#ffffff"/>
-                    <circle cx="-7" cy="-8" r="2.5" fill="#ffffff"/>
-                    <circle cx="0" cy="-10" r="2.5" fill="#ffffff"/>
-                    <circle cx="7" cy="-8" r="2.5" fill="#ffffff"/>
-                </g>
-                <g transform="translate(116, 122) rotate(18)">
-                    <ellipse cx="0" cy="0" rx="16" ry="20" fill="#1c1917"/>
-                    <ellipse cx="0" cy="5" rx="8" ry="9" fill="#ffffff"/>
-                    <circle cx="-7" cy="-8" r="2.5" fill="#ffffff"/>
-                    <circle cx="0" cy="-10" r="2.5" fill="#ffffff"/>
-                    <circle cx="7" cy="-8" r="2.5" fill="#ffffff"/>
-                </g>
-                <!-- Caña de bambù verde -->
-                <g transform="translate(24, 38) rotate(-26)">
-                    <rect x="0" y="0" width="8" height="24" rx="2" fill="#65a30d"/>
-                    <rect x="0" y="26" width="8" height="26" rx="2" fill="#65a30d"/>
-                    <rect x="0" y="54" width="8" height="26" rx="2" fill="#65a30d"/>
-                    <!-- Hojas de bambú -->
-                    <path d="M 0 12 Q -18 4 -24 14 Q -12 20 0 14 Z" fill="#65a30d"/>
-                    <path d="M 0 18 Q -20 18 -22 30 Q -10 30 0 20 Z" fill="#84cc16"/>
-                    <path d="M 0 24 Q -14 34 -10 44 Q -2 36 0 26 Z" fill="#65a30d"/>
-                </g>
-                <!-- Brazos -->
-                <ellipse cx="46" cy="92" rx="11" ry="16" transform="rotate(-25 46 92)" fill="#1c1917"/>
-                <ellipse cx="112" cy="96" rx="11" ry="17" transform="rotate(20 112 96)" fill="#1c1917"/>
-                <!-- Cabeza blanca grande -->
-                <ellipse cx="85" cy="54" rx="40" ry="33" transform="rotate(6 85 54)" fill="#ffffff"/>
-                <!-- Manchas negras de los ojos -->
-                <ellipse cx="67" cy="54" rx="12" ry="15" transform="rotate(-18 67 54)" fill="#1c1917"/>
-                <ellipse cx="101" cy="57" rx="12" ry="15" transform="rotate(22 101 57)" fill="#1c1917"/>
-                <!-- Ojos felices cerrados en arco -->
-                <path d="M 63 53 Q 67 47 71 53" stroke="#ffffff" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-                <path d="M 97 56 Q 101 50 105 56" stroke="#ffffff" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-                <!-- Nariz y boquita -->
-                <ellipse cx="83" cy="63" rx="5.5" ry="3.8" fill="#1c1917"/>
-                <path d="M 76 69 Q 80 74 83 68 Q 86 74 90 69" stroke="#1c1917" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            </svg>`,
-
-            crocodile: `
-            <svg viewBox="0 0 155 155" xmlns="http://www.w3.org/2000/svg">
-                <!-- Púas naranjas en la espalda y cola -->
-                <polygon points="82,22 93,26 84,33" fill="#f97316" stroke="#14532d" stroke-width="1.5"/>
-                <polygon points="86,38 98,43 88,50" fill="#f97316" stroke="#14532d" stroke-width="1.5"/>
-                <polygon points="88,56 100,61 89,68" fill="#f97316" stroke="#14532d" stroke-width="1.5"/>
-                <polygon points="89,74 101,79 89,86" fill="#f97316" stroke="#14532d" stroke-width="1.5"/>
-                <polygon points="94,95 103,88 105,98" fill="#f97316" stroke="#14532d" stroke-width="1.5"/>
-                <polygon points="108,98 117,91 119,101" fill="#f97316" stroke="#14532d" stroke-width="1.5"/>
-                <polygon points="122,99 131,92 132,101" fill="#f97316" stroke="#14532d" stroke-width="1.5"/>
-                <!-- Cola -->
-                <path d="M 85 106 Q 120 112 145 96 Q 125 130 82 126 Z" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
-                <!-- Cuerpo verde -->
-                <ellipse cx="66" cy="94" rx="25" ry="36" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
-                <!-- Barriga verde lima con rayas -->
-                <path d="M 46 66 Q 60 64 68 68 Q 74 96 66 124 Q 50 124 44 104 Z" fill="#bef264" stroke="#14532d" stroke-width="1.5"/>
-                <line x1="45" y1="78" x2="68" y2="78" stroke="#4d7c0f" stroke-width="1.5"/>
-                <line x1="44" y1="90" x2="69" y2="90" stroke="#4d7c0f" stroke-width="1.5"/>
-                <line x1="45" y1="102" x2="68" y2="102" stroke="#4d7c0f" stroke-width="1.5"/>
-                <line x1="47" y1="113" x2="66" y2="113" stroke="#4d7c0f" stroke-width="1.5"/>
-                <!-- Piernas y garras -->
-                <rect x="44" y="122" width="16" height="22" rx="6" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
-                <ellipse cx="48" cy="144" rx="12" ry="6" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
-                <rect x="66" y="122" width="16" height="22" rx="6" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
-                <ellipse cx="70" cy="144" rx="12" ry="6" fill="#22c55e" stroke="#14532d" stroke-width="2"/>
-                <!-- Brazos en jarra -->
-                <path d="M 46 74 Q 30 82 44 94" stroke="#14532d" stroke-width="11" stroke-linecap="round" fill="none"/>
-                <path d="M 46 74 Q 30 82 44 94" stroke="#22c55e" stroke-width="7.5" stroke-linecap="round" fill="none"/>
-                <path d="M 76 74 Q 92 84 74 94" stroke="#14532d" stroke-width="11" stroke-linecap="round" fill="none"/>
-                <path d="M 76 74 Q 92 84 74 94" stroke="#22c55e" stroke-width="7.5" stroke-linecap="round" fill="none"/>
-                <!-- Cabeza y Hocico largo -->
-                <path d="M 14 42 Q 10 30 28 28 L 46 26 Q 62 12 82 26 Q 90 42 78 56 Q 52 68 20 54 Q 12 50 14 42 Z"
-                      fill="#22c55e" stroke="#14532d" stroke-width="2"/>
-                <!-- Boca abierta sonriente y dientes blancos -->
-                <path d="M 20 44 Q 48 62 72 42 Q 52 48 20 44 Z" fill="#991b1b"/>
-                <path d="M 28 50 Q 48 56 64 47 Q 48 60 28 50 Z" fill="#f87171"/>
-                <polygon points="24,45 27,50 30,45" fill="#ffffff"/>
-                <polygon points="36,47 39,52 42,47" fill="#ffffff"/>
-                <polygon points="48,47 51,52 54,47" fill="#ffffff"/>
-                <polygon points="60,45 63,50 66,44" fill="#ffffff"/>
-                <!-- Fosas nasales -->
-                <circle cx="22" cy="33" r="2" fill="#14532d"/>
-                <circle cx="30" cy="32" r="2" fill="#14532d"/>
-                <!-- Ojos grandes expresivos -->
-                <circle cx="52" cy="22" r="11" fill="#ffffff" stroke="#14532d" stroke-width="2"/>
-                <circle cx="51" cy="22" r="6" fill="#0f172a"/>
-                <circle cx="49" cy="19.5" r="2.2" fill="#ffffff"/>
-                <circle cx="71" cy="23" r="11" fill="#ffffff" stroke="#14532d" stroke-width="2"/>
-                <circle cx="69" cy="23" r="6" fill="#0f172a"/>
-                <circle cx="67" cy="20.5" r="2.2" fill="#ffffff"/>
-            </svg>`
-        };
-
-        // Pre-renderizar imágenes de los animales para dibujarlas suavemente en el Canvas
-        const animalImages = {};
-        Object.keys(ANIMAL_SVGS).forEach(key => {
-            const img = new Image();
-            const svgBlob = new Blob([ANIMAL_SVGS[key]], { type: 'image/svg+xml;charset=utf-8' });
-            img.src = URL.createObjectURL(svgBlob);
-            animalImages[key] = img;
-        });
-
-        // --- Configuración de Personajes, Colores y Frutas ---
+        // --- Configuración con tus archivos de imagen reales ---
         const CHARACTERS = {
             giraffe: {
                 id: 'giraffe',
                 name: 'la Jirafa',
+                fallbackEmoji: '🦒',
+                logoSrc: 'logo-jirafa.png',
+                animalSrc: 'jirafa.png',
+                bannerBg: '#fef5d4',
                 fruitEmoji: '🍑',
                 fruitName: 'melocotones',
                 pageBg: 'bg-[#fef5d4]',
@@ -458,17 +256,18 @@
                 titleColor: 'text-amber-600',
                 btnGradient: 'from-amber-500 to-orange-500',
                 legendBorder: 'border-amber-300',
-                logoBg: '#fef5d4',
-                logoScript: '#f58220',
-                logoBlock: '#b85d19',
                 goodItems: [
-                    { emoji: '🍑', name: 'Melocotón', weight: 4 },
-                    { emoji: '🌱', name: 'Soja', weight: 1 }
+                    { emoji: '🍑', name: 'Melocotón' },
+                    { emoji: '🌱', name: 'Soja' }
                 ]
             },
             panda: {
                 id: 'panda',
                 name: 'el Oso Panda',
+                fallbackEmoji: '🐼',
+                logoSrc: 'logo-panda.png',
+                animalSrc: 'panda.png',
+                bannerBg: '#fce2e6',
                 fruitEmoji: '🍓',
                 fruitName: 'fresas',
                 pageBg: 'bg-[#fce2e6]',
@@ -476,17 +275,18 @@
                 titleColor: 'text-pink-600',
                 btnGradient: 'from-pink-500 to-rose-500',
                 legendBorder: 'border-pink-300',
-                logoBg: '#fce2e6',
-                logoScript: '#ff2a92',
-                logoBlock: '#9e2629',
                 goodItems: [
-                    { emoji: '🍓', name: 'Fresa', weight: 4 },
-                    { emoji: '🌱', name: 'Soja', weight: 1 }
+                    { emoji: '🍓', name: 'Fresa' },
+                    { emoji: '🌱', name: 'Soja' }
                 ]
             },
             crocodile: {
                 id: 'crocodile',
                 name: 'el Cocodrilo',
+                fallbackEmoji: '🐊',
+                logoSrc: 'logo-cocodrilo.png',
+                animalSrc: 'cocodrilo.png',
+                bannerBg: '#d7f5cb',
                 fruitEmoji: '🍋',
                 fruitName: 'limones',
                 pageBg: 'bg-[#d7f5cb]',
@@ -494,15 +294,20 @@
                 titleColor: 'text-emerald-600',
                 btnGradient: 'from-emerald-500 to-green-600',
                 legendBorder: 'border-emerald-300',
-                logoBg: '#d7f5cb',
-                logoScript: '#00a859',
-                logoBlock: '#0e6b38',
                 goodItems: [
-                    { emoji: '🍋', name: 'Limón', weight: 4 },
-                    { emoji: '🌱', name: 'Soja', weight: 1 }
+                    { emoji: '🍋', name: 'Limón' },
+                    { emoji: '🌱', name: 'Soja' }
                 ]
             }
         };
+
+        // Precargar imágenes reales desde el repositorio
+        const loadedAnimalImgs = {};
+        Object.keys(CHARACTERS).forEach(key => {
+            const img = new Image();
+            img.src = CHARACTERS[key].animalSrc;
+            loadedAnimalImgs[key] = img;
+        });
 
         const BAD_ITEMS = [
             { emoji: '🦠', name: 'Bacteria' },
@@ -512,6 +317,8 @@
         // --- Referencias UI ---
         const pageBody = document.getElementById('pageBody');
         const brandBanner = document.getElementById('brandBanner');
+        const logoImage = document.getElementById('logoImage');
+        const canvasWrapper = document.getElementById('canvasWrapper');
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -531,4 +338,132 @@
         const legendBox = document.getElementById('legendBox');
         const legendGoodEmoji = document.getElementById('legendGoodEmoji');
 
-        const scoreDisplay = document.
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const comboDisplay = document.getElementById('comboDisplay');
+        const livesContainer = document.getElementById('livesContainer');
+        const finalScoreDisplay = document.getElementById('finalScore');
+        const highScoreDisplay = document.getElementById('highScore');
+
+        // --- Estado del Juego ---
+        let selectedCharKey = 'giraffe';
+        let gameState = 'START';
+        let score = 0;
+        let lives = 3;
+        let combo = 0;
+        let highScore = 0;
+        try {
+            highScore = parseInt(localStorage.getItem('soyajoy_high_score')) || 0;
+        } catch (e) {}
+
+        let lastTime = 0;
+        let spawnTimer = 0;
+        const BASE_SPAWN_INTERVAL = 1550;
+
+        const player = {
+            x: 150,
+            y: 300,
+            width: 105,
+            height: 110,
+            speed: 440,
+            eatScale: 0
+        };
+
+        let items = [];
+        let particles = [];
+        const keys = { left: false, right: false };
+
+        function selectCharacter(charKey) {
+            selectedCharKey = charKey;
+            const cfg = CHARACTERS[charKey];
+
+            brandBanner.style.backgroundColor = cfg.bannerBg;
+            logoImage.src = cfg.logoSrc;
+
+            pageBody.className = `${cfg.pageBg} min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden transition-colors duration-300`;
+            canvas.style.background = `linear-gradient(180deg, ${cfg.canvasGradient[0]} 0%, ${cfg.canvasGradient[1]} 100%)`;
+
+            welcomeTitle.className = `text-2xl sm:text-3xl font-game ${cfg.titleColor} mb-1`;
+            startBtn.className = `btn-bounce bg-gradient-to-r ${cfg.btnGradient} text-white font-game text-xl sm:text-2xl py-3 px-12 rounded-full shadow-lg border-2 border-white`;
+            legendBox.className = `grid grid-cols-2 gap-2 text-xs text-left bg-white/90 p-3 rounded-2xl mb-5 w-full max-w-sm border-2 ${cfg.legendBorder}`;
+            legendGoodEmoji.textContent = `${cfg.fruitEmoji} 🌱`;
+
+            document.querySelectorAll('.character-card').forEach(card => {
+                const isSelected = card.dataset.char === charKey;
+                card.classList.toggle('selected', isSelected);
+                card.classList.remove('border-amber-500', 'border-pink-500', 'border-emerald-500', 'border-transparent');
+                if (isSelected) {
+                    if (charKey === 'giraffe') card.classList.add('border-amber-500');
+                    if (charKey === 'panda') card.classList.add('border-pink-500');
+                    if (charKey === 'crocodile') card.classList.add('border-emerald-500');
+                } else {
+                    card.classList.add('border-transparent');
+                }
+            });
+
+            resizeCanvas();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer(0);
+        }
+
+        document.querySelectorAll('.character-card').forEach(card => {
+            card.addEventListener('click', () => {
+                initAudio();
+                playSound('select');
+                selectCharacter(card.dataset.char);
+            });
+        });
+
+        function resizeCanvas() {
+            const rect = canvasWrapper.getBoundingClientRect();
+            canvas.width = rect.width > 0 ? rect.width : 400;
+            canvas.height = rect.height > 0 ? rect.height : 450;
+
+            player.width = Math.max(92, canvas.width * 0.25);
+            player.height = player.width * 1.05;
+            player.y = canvas.height - player.height - 10;
+
+            if (gameState === 'START') {
+                player.x = canvas.width / 2 - player.width / 2;
+            } else {
+                clampPlayerPosition();
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+            if (e.key === 'p' || e.key === 'P') togglePause();
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
+        });
+
+        let isDragging = false;
+
+        function handlePointerMove(e) {
+            if (gameState !== 'PLAYING') return;
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const touchX = clientX - rect.left;
+            player.x = touchX - player.width / 2;
+            clampPlayerPosition();
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDragging = true; handlePointerMove(e); });
+        canvas.addEventListener('mousemove', (e) => { if (isDragging) handlePointerMove(e); });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        canvas.addEventListener('touchstart', (e) => { isDragging = true; handlePointerMove(e); }, { passive: true });
+        canvas.addEventListener('touchmove', handlePointerMove, { passive: true });
+        canvas.addEventListener('touchend', () => { isDragging = false; });
+
+        function clampPlayerPosition() {
+            if (player.x < 0) player.x = 0;
+            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+        }
+
+        function spawnItem() {
