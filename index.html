@@ -467,3 +467,290 @@
         }
 
         function spawnItem() {
+            const cfg = CHARACTERS[selectedCharKey];
+            const isGood = Math.random() > 0.22;
+
+            let chosenTemplate;
+            if (isGood) {
+                chosenTemplate = Math.random() < 0.80 ? cfg.goodItems[0] : cfg.goodItems[1];
+            } else {
+                chosenTemplate = BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)];
+            }
+
+            const size = isGood ? Math.max(38, canvas.width * 0.105) : Math.max(32, canvas.width * 0.085);
+            const baseSpeed = isGood ? (115 + Math.random() * 35) : (105 + Math.random() * 25);
+            const gentleProgression = Math.min(95, score * 0.8);
+
+            items.push({
+                x: Math.random() * (canvas.width - size),
+                y: -size,
+                size: size,
+                speed: baseSpeed + gentleProgression,
+                emoji: chosenTemplate.emoji,
+                isGood: isGood,
+                rotation: 0,
+                rotSpeed: (Math.random() - 0.5) * 1.2
+            });
+        }
+
+        function createParticle(x, y, text, color) {
+            particles.push({
+                x: x,
+                y: y,
+                text: text,
+                color: color,
+                opacity: 1.0,
+                vy: -48
+            });
+        }
+
+        function drawPlayer(dt) {
+            const cfg = CHARACTERS[selectedCharKey];
+            const img = loadedAnimalImgs[selectedCharKey];
+            ctx.save();
+
+            // Sombra bajo el animal
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.beginPath();
+            ctx.ellipse(
+                player.x + player.width / 2,
+                player.y + player.height * 0.96,
+                player.width * 0.38,
+                player.height * 0.06,
+                0, 0, Math.PI * 2
+            );
+            ctx.fill();
+
+            if (player.eatScale > 0) {
+                player.eatScale = Math.max(0, player.eatScale - dt * 3.5);
+            }
+            const bounce = Math.sin(player.eatScale * Math.PI) * 0.14;
+            const scaleX = 1 + bounce;
+            const scaleY = 1 - bounce * 0.5;
+
+            ctx.translate(player.x + player.width / 2, player.y + player.height);
+            ctx.scale(scaleX, scaleY);
+
+            // Si tu archivo de imagen cargó correctamente, lo dibuja; si aún no lo subiste, muestra el emoji para que nunca falle
+            if (img && img.complete && img.naturalWidth > 0) {
+                ctx.drawImage(img, -player.width / 2, -player.height, player.width, player.height);
+            } else {
+                ctx.font = `${player.width * 0.85}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(cfg.fallbackEmoji, 0, 0);
+            }
+
+            ctx.restore();
+        }
+
+        function drawItems() {
+            items.forEach(item => {
+                ctx.save();
+                ctx.translate(item.x + item.size / 2, item.y + item.size / 2);
+                ctx.rotate(item.rotation);
+                ctx.font = `${item.size}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(item.emoji, 0, 0);
+                ctx.restore();
+            });
+        }
+
+        function drawParticles(dt) {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.y += p.vy * dt;
+                p.opacity -= 1.0 * dt;
+
+                if (p.opacity <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, p.opacity);
+                ctx.font = 'bold 22px "Fredoka One", cursive';
+                ctx.fillStyle = p.color;
+                ctx.textAlign = 'center';
+                ctx.fillText(p.text, p.x, p.y);
+                ctx.restore();
+            }
+        }
+
+        function update(dt) {
+            if (keys.left) player.x -= player.speed * dt;
+            if (keys.right) player.x += player.speed * dt;
+            clampPlayerPosition();
+
+            spawnTimer += dt * 1000;
+            const currentInterval = Math.max(920, BASE_SPAWN_INTERVAL - (score * 4));
+            if (spawnTimer >= currentInterval) {
+                spawnItem();
+                spawnTimer = 0;
+            }
+
+            for (let i = items.length - 1; i >= 0; i--) {
+                const item = items[i];
+                item.y += item.speed * dt;
+                item.rotation += item.rotSpeed * dt;
+
+                const padding = item.isGood ? 0.12 : 0.28;
+                const hitX = item.x + item.size * (1 - padding) > player.x + player.width * 0.1 &&
+                             item.x + item.size * padding < player.x + player.width * 0.9;
+                const hitY = item.y + item.size * (1 - padding) > player.y + player.height * 0.15 &&
+                             item.y + item.size * padding < player.y + player.height * 0.95;
+
+                if (hitX && hitY) {
+                    if (item.isGood) {
+                        combo++;
+                        const comboBonus = combo > 3 ? 2 : 1;
+                        const pts = 10 * comboBonus;
+                        score += pts;
+                        player.eatScale = 1.0;
+
+                        playSound(combo > 3 ? 'combo' : 'catch');
+                        createParticle(item.x + item.size / 2, item.y, `+${pts} ${combo > 3 ? '⭐' : '😋'}`, '#059669');
+                    } else {
+                        combo = 0;
+                        lives--;
+                        playSound('bad');
+                        createParticle(item.x + item.size / 2, item.y, '-1 ❤️', '#e11d48');
+                        updateLivesUI();
+
+                        if (lives <= 0) {
+                            endGame();
+                            return;
+                        }
+                    }
+
+                    updateUI();
+                    items.splice(i, 1);
+                    continue;
+                }
+
+                if (item.y > canvas.height + 50) {
+                    if (item.isGood) {
+                        combo = 0;
+                        updateUI();
+                    }
+                    items.splice(i, 1);
+                }
+            }
+        }
+
+        function render(dt) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer(dt);
+            drawItems();
+            drawParticles(dt);
+        }
+
+        function gameLoop(timestamp) {
+            if (gameState !== 'PLAYING') return;
+
+            if (!lastTime) lastTime = timestamp;
+            const dt = Math.min(0.08, (timestamp - lastTime) / 1000);
+            lastTime = timestamp;
+
+            update(dt);
+            render(dt);
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function updateUI() {
+            scoreDisplay.textContent = score;
+            comboDisplay.textContent = `x${Math.max(1, combo)}`;
+            if (combo > 3) {
+                comboDisplay.classList.add('animate-bounce');
+            } else {
+                comboDisplay.classList.remove('animate-bounce');
+            }
+        }
+
+        function updateLivesUI() {
+            livesContainer.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('span');
+                heart.textContent = i < lives ? '❤️' : '🤍';
+                livesContainer.appendChild(heart);
+            }
+        }
+
+        function startGame() {
+            initAudio();
+            resizeCanvas();
+            score = 0;
+            lives = 3;
+            combo = 0;
+            items = [];
+            particles = [];
+            spawnTimer = BASE_SPAWN_INTERVAL; // Lanza la primera fruta de inmediato
+            lastTime = performance.now();
+
+            updateUI();
+            updateLivesUI();
+
+            startScreen.classList.add('hidden');
+            pauseScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+
+            gameState = 'PLAYING';
+            requestAnimationFrame(gameLoop);
+        }
+
+        function showCharacterSelection() {
+            gameState = 'START';
+            items = [];
+            particles = [];
+            pauseScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+            resizeCanvas();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer(0);
+        }
+
+        function togglePause() {
+            if (gameState === 'PLAYING') {
+                gameState = 'PAUSED';
+                pauseScreen.classList.remove('hidden');
+            } else if (gameState === 'PAUSED') {
+                gameState = 'PLAYING';
+                pauseScreen.classList.add('hidden');
+                lastTime = performance.now();
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function endGame() {
+            gameState = 'GAMEOVER';
+            const cfg = CHARACTERS[selectedCharKey];
+            if (score > highScore) {
+                highScore = score;
+                try {
+                    localStorage.setItem('soyajoy_high_score', highScore);
+                } catch (e) {}
+            }
+
+            document.getElementById('gameOverSubtitle').textContent =
+                `¡Qué bien comió ${cfg.name} sus ${cfg.fruitName} y soja!`;
+            finalScoreDisplay.textContent = score;
+            highScoreDisplay.textContent = highScore;
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        startBtn.addEventListener('click', startGame);
+        resumeBtn.addEventListener('click', togglePause);
+        pauseBtn.addEventListener('click', togglePause);
+        restartBtn.addEventListener('click', startGame);
+        restartPauseBtn.addEventListener('click', startGame);
+        changeCharPauseBtn.addEventListener('click', showCharacterSelection);
+        changeCharOverBtn.addEventListener('click', showCharacterSelection);
+
+        // Inicialización inmediata
+        selectCharacter('giraffe');
+    </script>
+</body>
+</html>
