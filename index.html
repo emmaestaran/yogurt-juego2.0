@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOYAJOY - ¡Atrapa la Fruta!</title>
+    <title>SOYAJOY - Acchiappa la Frutta!</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;700&display=swap');
 
         body {
             font-family: 'Quicksand', sans-serif;
-            touch-action: none;
             user-select: none;
             transition: background-color 0.3s ease;
         }
@@ -29,9 +28,11 @@
         #gameCanvas {
             border-radius: 1.5rem;
             box-shadow: 0 15px 35px rgba(100, 116, 139, 0.18);
+            touch-action: none;
         }
 
         .btn-bounce {
+            cursor: pointer;
             transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.2s ease;
         }
         .btn-bounce:hover {
@@ -51,15 +52,15 @@
 
     <div class="relative w-full max-w-xl flex flex-col items-center">
 
-        <!-- Banner Logo Superior (Carga tu imagen real de logo) -->
+        <!-- Banner Logo Dinamico SOYAJOY -->
         <div id="brandBanner" class="w-full mb-2.5 rounded-2xl overflow-hidden shadow-md border-2 border-white flex items-center justify-center bg-[#fef5d4] py-1.5 px-4">
             <img id="logoImage" src="logo-jirafa.png" alt="SOYAJOY" class="max-h-[78px] sm:max-h-[92px] w-auto object-contain">
         </div>
 
-        <!-- Barra Superior de Estadísticas -->
+        <!-- Barra Superiore Statistiche -->
         <div class="w-full flex items-center justify-between mb-2.5 px-4 py-2 rounded-2xl glass-panel">
             <div class="flex items-center space-x-2">
-                <div class="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-wider">Vidas</div>
+                <div class="text-xs sm:text-sm font-bold text-slate-500 uppercase tracking-wider">Vite</div>
                 <div id="livesContainer" class="flex space-x-1 text-xl sm:text-2xl">
                     <span>❤️</span><span>❤️</span><span>❤️</span>
                 </div>
@@ -67,124 +68,124 @@
 
             <div class="flex items-center space-x-4">
                 <div class="text-center">
-                    <div class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Racha</div>
+                    <div class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Serie</div>
                     <div id="comboDisplay" class="text-base sm:text-lg font-game text-purple-600">x1</div>
                 </div>
                 <div class="text-right">
-                    <div class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Puntos</div>
+                    <div class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Punti</div>
                     <div id="scoreDisplay" class="text-xl sm:text-2xl font-game text-emerald-600">0</div>
                 </div>
             </div>
         </div>
 
-        <!-- Área Canvas de Juego -->
+        <!-- Area Canvas di Gioco -->
         <div id="canvasWrapper" class="relative w-full aspect-[4/4.5] max-h-[64vh] min-h-[340px]">
             <canvas id="gameCanvas" class="w-full h-full block cursor-pointer"></canvas>
 
-            <!-- Pantalla Inicial: Selección Directa -->
-            <div id="startScreen" class="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center glass-panel rounded-3xl z-20 overflow-y-auto">
+            <!-- Schermata Iniziale: Scelta Animale -->
+            <div id="startScreen" style="display: flex;" class="absolute inset-0 flex-col items-center justify-center p-4 sm:p-6 text-center glass-panel rounded-3xl z-30 overflow-y-auto">
                 <h1 id="welcomeTitle" class="text-2xl sm:text-3xl font-game text-amber-600 mb-1">
-                    ¡Elige tu amigo!
+                    Ciao! Scegli il tuo amico!
                 </h1>
                 <p class="text-xs sm:text-sm text-slate-600 mb-4 max-w-sm font-semibold">
-                    Toca un animal para jugar y comer su fruta favorita y soja
+                    Tocca un animale per giocare e mangiare la sua frutta preferita e la soia
                 </p>
 
-                <!-- 3 Tarjetas con tus imágenes reales -->
+                <!-- 3 Schede Personaggi -->
                 <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5 w-full max-w-md mb-5">
-                    <!-- Jirafa -->
+                    <!-- Giraffa -->
                     <button type="button" data-char="giraffe" class="character-card selected btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#fef5d4] border-4 border-amber-500 text-amber-900">
-                        <img src="jirafa.png" alt="Jirafa" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
-                        <span class="font-game text-xs sm:text-sm">Jirafa</span>
-                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍑 Melocotón</span>
+                        <img src="jirafa.png" alt="Giraffa" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
+                        <span class="font-game text-xs sm:text-sm">Giraffa</span>
+                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍑 Pesca</span>
                     </button>
 
-                    <!-- Oso Panda -->
+                    <!-- Panda -->
                     <button type="button" data-char="panda" class="character-card btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#fce2e6] border-4 border-transparent text-pink-900">
-                        <img src="panda.png" alt="Oso Panda" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
-                        <span class="font-game text-xs sm:text-sm">Oso Panda</span>
-                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍓 Fresas</span>
+                        <img src="panda.png" alt="Panda" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
+                        <span class="font-game text-xs sm:text-sm">Panda</span>
+                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍓 Fragola</span>
                     </button>
 
-                    <!-- Cocodrilo -->
+                    <!-- Coccodrillo -->
                     <button type="button" data-char="crocodile" class="character-card btn-bounce flex flex-col items-center p-2.5 sm:p-3 rounded-2xl bg-[#d7f5cb] border-4 border-transparent text-emerald-900">
-                        <img src="cocodrilo.png" alt="Cocodrilo" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
-                        <span class="font-game text-xs sm:text-sm">Cocodrilo</span>
-                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍋 Limón</span>
+                        <img src="cocodrilo.png" alt="Coccodrillo" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-1 rounded-xl">
+                        <span class="font-game text-xs sm:text-sm">Coccodrillo</span>
+                        <span class="text-[11px] sm:text-xs font-bold bg-white/90 px-2 py-0.5 rounded-full mt-1 shadow-sm">🍋 Limone</span>
                     </button>
                 </div>
 
-                <!-- Leyenda -->
+                <!-- Legenda -->
                 <div id="legendBox" class="grid grid-cols-2 gap-2 text-xs text-left bg-white/90 p-3 rounded-2xl mb-5 w-full max-w-sm border-2 border-amber-300">
                     <div class="flex items-center space-x-1.5">
                         <span id="legendGoodEmoji" class="text-lg">🍑 🌱</span>
-                        <span class="font-bold text-emerald-600">+10 Puntos</span>
+                        <span class="font-bold text-emerald-600">+10 Punti</span>
                     </div>
                     <div class="flex items-center space-x-1.5">
                         <span class="text-lg">🦠 🪰</span>
-                        <span class="font-bold text-rose-500">Evita (-1 Vida)</span>
+                        <span class="font-bold text-rose-500">Evita (-1 Vita)</span>
                     </div>
                 </div>
 
-                <button type="button" id="startBtn" class="btn-bounce bg-gradient-to-r from-amber-500 to-orange-500 text-white font-game text-xl sm:text-2xl py-3 px-12 rounded-full shadow-lg border-2 border-white">
-                    ¡JUGAR! 🎮
+                <button type="button" id="startBtn" onclick="startGame()" class="btn-bounce bg-gradient-to-r from-amber-500 to-orange-500 text-white font-game text-xl sm:text-2xl py-3 px-12 rounded-full shadow-lg border-2 border-white">
+                    GIOCA! 🎮
                 </button>
             </div>
 
-            <!-- Pantalla Pausa -->
-            <div id="pauseScreen" class="hidden absolute inset-0 flex flex-col items-center justify-center p-6 text-center glass-panel rounded-3xl z-20">
+            <!-- Schermata Pausa -->
+            <div id="pauseScreen" style="display: none;" class="absolute inset-0 flex-col items-center justify-center p-6 text-center glass-panel rounded-3xl z-30">
                 <div class="text-5xl mb-2">⏸️</div>
-                <h2 class="text-3xl sm:text-4xl font-game text-sky-500 mb-4">Juego en Pausa</h2>
-                <button type="button" id="resumeBtn" class="btn-bounce bg-sky-400 hover:bg-sky-500 text-white font-game text-lg py-3 px-8 rounded-full shadow-md mb-3 border-2 border-white">
-                    Continuar ▶️
+                <h2 class="text-3xl sm:text-4xl font-game text-sky-500 mb-4">Gioco in Pausa</h2>
+                <button type="button" id="resumeBtn" onclick="togglePause()" class="btn-bounce bg-sky-400 hover:bg-sky-500 text-white font-game text-lg py-3 px-8 rounded-full shadow-md mb-3 border-2 border-white">
+                    Continua ▶️
                 </button>
-                <button type="button" id="changeCharPauseBtn" class="btn-bounce bg-amber-100 hover:bg-amber-200 text-amber-800 font-game text-sm py-2.5 px-6 rounded-full mb-2">
-                    Cambiar Animal
+                <button type="button" id="changeCharPauseBtn" onclick="showCharacterSelection()" class="btn-bounce bg-amber-100 hover:bg-amber-200 text-amber-800 font-game text-sm py-2.5 px-6 rounded-full mb-2">
+                    Cambia Animale
                 </button>
-                <button type="button" id="restartPauseBtn" class="btn-bounce bg-slate-200 hover:bg-slate-300 text-slate-700 font-game text-sm py-2 px-5 rounded-full">
-                    Reiniciar 🔄
+                <button type="button" id="restartPauseBtn" onclick="startGame()" class="btn-bounce bg-slate-200 hover:bg-slate-300 text-slate-700 font-game text-sm py-2 px-5 rounded-full">
+                    Ricomincia 🔄
                 </button>
             </div>
 
-            <!-- Pantalla Fin del Juego -->
-            <div id="gameOverScreen" class="hidden absolute inset-0 flex flex-col items-center justify-center p-6 text-center glass-panel rounded-3xl z-20">
+            <!-- Schermata Fine del Gioco -->
+            <div id="gameOverScreen" style="display: none;" class="absolute inset-0 flex-col items-center justify-center p-6 text-center glass-panel rounded-3xl z-30">
                 <div class="text-5xl mb-2">🌟</div>
-                <h2 class="text-3xl sm:text-4xl font-game text-rose-500 mb-1">¡Muy bien!</h2>
-                <p id="gameOverSubtitle" class="text-sm text-slate-600 mb-4 font-semibold">¡Qué rico estuvo todo!</p>
+                <h2 class="text-3xl sm:text-4xl font-game text-rose-500 mb-1">Bravissimo!</h2>
+                <p id="gameOverSubtitle" class="text-sm text-slate-600 mb-4 font-semibold">Ottimo lavoro!</p>
 
                 <div class="bg-white/90 rounded-2xl p-4 w-full max-w-xs mb-5 border-2 border-rose-100 space-y-2">
                     <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-400">PUNTUACIÓN FINAL</span>
+                        <span class="text-xs font-bold text-slate-400">PUNTEGGIO FINALE</span>
                         <span id="finalScore" class="font-game text-2xl text-emerald-600">0</span>
                     </div>
                     <div class="flex justify-between items-center border-t pt-2 border-slate-100">
-                        <span class="text-xs font-bold text-slate-400">TU RÉCORD</span>
+                        <span class="text-xs font-bold text-slate-400">IL TUO RECORD</span>
                         <span id="highScore" class="font-game text-2xl text-purple-600">0</span>
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-2.5">
-                    <button type="button" id="restartBtn" class="btn-bounce bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-game text-lg py-3 px-7 rounded-full shadow-lg border-2 border-white">
-                        Jugar de Nuevo 🔄
+                    <button type="button" id="restartBtn" onclick="startGame()" class="btn-bounce bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-game text-lg py-3 px-7 rounded-full shadow-lg border-2 border-white">
+                        Gioca Ancora 🔄
                     </button>
-                    <button type="button" id="changeCharOverBtn" class="btn-bounce bg-white hover:bg-slate-50 text-slate-700 font-game text-base py-3 px-5 rounded-full shadow border-2 border-slate-200">
-                        Cambiar Animal
+                    <button type="button" id="changeCharOverBtn" onclick="showCharacterSelection()" class="btn-bounce bg-white hover:bg-slate-50 text-slate-700 font-game text-base py-3 px-5 rounded-full shadow border-2 border-slate-200">
+                        Cambia Amico
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Barra de Controles Inferior -->
+        <!-- Barra Comandi Inferiore -->
         <div class="w-full flex justify-between items-center mt-2.5 px-2 text-xs text-slate-600 font-semibold">
-            <span>Mueve con el dedo, el ratón o las flechas ⬅️ ➡️</span>
-            <button type="button" id="pauseBtn" class="text-slate-700 hover:text-slate-900 font-bold bg-white/85 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+            <span>Muovi con il dito, il mouse o le frecce ⬅️ ➡️</span>
+            <button type="button" id="pauseBtn" onclick="togglePause()" class="text-slate-700 hover:text-slate-900 font-bold bg-white/85 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm cursor-pointer">
                 Pausa ⏸️
             </button>
         </div>
     </div>
 
     <script>
-        // --- Audio seguro ---
+        // --- Audio ---
         let audioCtx = null;
         function initAudio() {
             try {
@@ -240,68 +241,67 @@
             } catch (e) {}
         }
 
-        // --- Configuración con tus archivos de imagen reales ---
+        // --- Configurazione Personaggi in Italiano ---
         const CHARACTERS = {
             giraffe: {
                 id: 'giraffe',
-                name: 'la Jirafa',
+                name: 'la Giraffa',
                 fallbackEmoji: '🦒',
                 logoSrc: 'logo-jirafa.png',
                 animalSrc: 'jirafa.png',
                 bannerBg: '#fef5d4',
                 fruitEmoji: '🍑',
-                fruitName: 'melocotones',
+                fruitName: 'pesche',
                 pageBg: 'bg-[#fef5d4]',
                 canvasGradient: ['#fef9e3', '#fdebc8'],
                 titleColor: 'text-amber-600',
                 btnGradient: 'from-amber-500 to-orange-500',
                 legendBorder: 'border-amber-300',
                 goodItems: [
-                    { emoji: '🍑', name: 'Melocotón' },
-                    { emoji: '🌱', name: 'Soja' }
+                    { emoji: '🍑', name: 'Pesca' },
+                    { emoji: '🌱', name: 'Soia' }
                 ]
             },
             panda: {
                 id: 'panda',
-                name: 'el Oso Panda',
+                name: 'il Panda',
                 fallbackEmoji: '🐼',
                 logoSrc: 'logo-panda.png',
                 animalSrc: 'panda.png',
                 bannerBg: '#fce2e6',
                 fruitEmoji: '🍓',
-                fruitName: 'fresas',
+                fruitName: 'fragole',
                 pageBg: 'bg-[#fce2e6]',
                 canvasGradient: ['#fce8eb', '#fad4db'],
                 titleColor: 'text-pink-600',
                 btnGradient: 'from-pink-500 to-rose-500',
                 legendBorder: 'border-pink-300',
                 goodItems: [
-                    { emoji: '🍓', name: 'Fresa' },
-                    { emoji: '🌱', name: 'Soja' }
+                    { emoji: '🍓', name: 'Fragola' },
+                    { emoji: '🌱', name: 'Soia' }
                 ]
             },
             crocodile: {
                 id: 'crocodile',
-                name: 'el Cocodrilo',
+                name: 'il Coccodrillo',
                 fallbackEmoji: '🐊',
                 logoSrc: 'logo-cocodrilo.png',
                 animalSrc: 'cocodrilo.png',
                 bannerBg: '#d7f5cb',
                 fruitEmoji: '🍋',
-                fruitName: 'limones',
+                fruitName: 'limoni',
                 pageBg: 'bg-[#d7f5cb]',
                 canvasGradient: ['#e2f8d8', '#c7f0b6'],
                 titleColor: 'text-emerald-600',
                 btnGradient: 'from-emerald-500 to-green-600',
                 legendBorder: 'border-emerald-300',
                 goodItems: [
-                    { emoji: '🍋', name: 'Limón' },
-                    { emoji: '🌱', name: 'Soja' }
+                    { emoji: '🍋', name: 'Limone' },
+                    { emoji: '🌱', name: 'Soia' }
                 ]
             }
         };
 
-        // Precargar imágenes reales desde el repositorio
         const loadedAnimalImgs = {};
         Object.keys(CHARACTERS).forEach(key => {
             const img = new Image();
@@ -310,11 +310,11 @@
         });
 
         const BAD_ITEMS = [
-            { emoji: '🦠', name: 'Bacteria' },
+            { emoji: '🦠', name: 'Batterio' },
             { emoji: '🪰', name: 'Mosca' }
         ];
 
-        // --- Referencias UI ---
+        // --- Riferimenti UI ---
         const pageBody = document.getElementById('pageBody');
         const brandBanner = document.getElementById('brandBanner');
         const logoImage = document.getElementById('logoImage');
@@ -327,13 +327,6 @@
         const gameOverScreen = document.getElementById('gameOverScreen');
 
         const startBtn = document.getElementById('startBtn');
-        const resumeBtn = document.getElementById('resumeBtn');
-        const restartBtn = document.getElementById('restartBtn');
-        const restartPauseBtn = document.getElementById('restartPauseBtn');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const changeCharPauseBtn = document.getElementById('changeCharPauseBtn');
-        const changeCharOverBtn = document.getElementById('changeCharOverBtn');
-
         const welcomeTitle = document.getElementById('welcomeTitle');
         const legendBox = document.getElementById('legendBox');
         const legendGoodEmoji = document.getElementById('legendGoodEmoji');
@@ -344,7 +337,7 @@
         const finalScoreDisplay = document.getElementById('finalScore');
         const highScoreDisplay = document.getElementById('highScore');
 
-        // --- Estado del Juego ---
+        // --- Stato del Gioco ---
         let selectedCharKey = 'giraffe';
         let gameState = 'START';
         let score = 0;
@@ -357,6 +350,7 @@
 
         let lastTime = 0;
         let spawnTimer = 0;
+        let animFrameId = null;
         const BASE_SPAWN_INTERVAL = 1550;
 
         const player = {
@@ -509,7 +503,7 @@
             const img = loadedAnimalImgs[selectedCharKey];
             ctx.save();
 
-            // Sombra bajo el animal
+            // Ombra sotto l'animale
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
             ctx.beginPath();
             ctx.ellipse(
@@ -531,7 +525,6 @@
             ctx.translate(player.x + player.width / 2, player.y + player.height);
             ctx.scale(scaleX, scaleY);
 
-            // Si tu archivo de imagen cargó correctamente, lo dibuja; si aún no lo subiste, muestra el emoji para que nunca falle
             if (img && img.complete && img.naturalWidth > 0) {
                 ctx.drawImage(img, -player.width / 2, -player.height, player.width, player.height);
             } else {
@@ -656,7 +649,7 @@
             update(dt);
             render(dt);
 
-            requestAnimationFrame(gameLoop);
+            animFrameId = requestAnimationFrame(gameLoop);
         }
 
         function updateUI() {
@@ -679,6 +672,7 @@
         }
 
         function startGame() {
+            if (animFrameId) cancelAnimationFrame(animFrameId);
             initAudio();
             resizeCanvas();
             score = 0;
@@ -686,27 +680,32 @@
             combo = 0;
             items = [];
             particles = [];
-            spawnTimer = BASE_SPAWN_INTERVAL; // Lanza la primera fruta de inmediato
+            spawnTimer = BASE_SPAWN_INTERVAL;
             lastTime = performance.now();
 
             updateUI();
             updateLivesUI();
 
-            startScreen.classList.add('hidden');
-            pauseScreen.classList.add('hidden');
-            gameOverScreen.classList.add('hidden');
+            // Nasconde con sicurezza tutte le schermate sovrapposte
+            startScreen.style.display = 'none';
+            pauseScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
 
             gameState = 'PLAYING';
-            requestAnimationFrame(gameLoop);
+            player.x = canvas.width / 2 - player.width / 2;
+            spawnItem();
+            render(0);
+            animFrameId = requestAnimationFrame(gameLoop);
         }
 
         function showCharacterSelection() {
+            if (animFrameId) cancelAnimationFrame(animFrameId);
             gameState = 'START';
             items = [];
             particles = [];
-            pauseScreen.classList.add('hidden');
-            gameOverScreen.classList.add('hidden');
-            startScreen.classList.remove('hidden');
+            pauseScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
             resizeCanvas();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawPlayer(0);
@@ -715,17 +714,19 @@
         function togglePause() {
             if (gameState === 'PLAYING') {
                 gameState = 'PAUSED';
-                pauseScreen.classList.remove('hidden');
+                if (animFrameId) cancelAnimationFrame(animFrameId);
+                pauseScreen.style.display = 'flex';
             } else if (gameState === 'PAUSED') {
                 gameState = 'PLAYING';
-                pauseScreen.classList.add('hidden');
+                pauseScreen.style.display = 'none';
                 lastTime = performance.now();
-                requestAnimationFrame(gameLoop);
+                animFrameId = requestAnimationFrame(gameLoop);
             }
         }
 
         function endGame() {
             gameState = 'GAMEOVER';
+            if (animFrameId) cancelAnimationFrame(animFrameId);
             const cfg = CHARACTERS[selectedCharKey];
             if (score > highScore) {
                 highScore = score;
@@ -735,21 +736,13 @@
             }
 
             document.getElementById('gameOverSubtitle').textContent =
-                `¡Qué bien comió ${cfg.name} sus ${cfg.fruitName} y soja!`;
+                `Ottimo lavoro con ${cfg.name}, le sue ${cfg.fruitName} e la soia!`;
             finalScoreDisplay.textContent = score;
             highScoreDisplay.textContent = highScore;
-            gameOverScreen.classList.remove('hidden');
+            gameOverScreen.style.display = 'flex';
         }
 
-        startBtn.addEventListener('click', startGame);
-        resumeBtn.addEventListener('click', togglePause);
-        pauseBtn.addEventListener('click', togglePause);
-        restartBtn.addEventListener('click', startGame);
-        restartPauseBtn.addEventListener('click', startGame);
-        changeCharPauseBtn.addEventListener('click', showCharacterSelection);
-        changeCharOverBtn.addEventListener('click', showCharacterSelection);
-
-        // Inicialización inmediata
+        // Inizializzazione immediata
         selectCharacter('giraffe');
     </script>
 </body>
