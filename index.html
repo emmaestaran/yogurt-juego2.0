@@ -14,7 +14,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: rgba(246, 183, 95, 0.34);
+            background-color: #fce7c9;
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
@@ -41,7 +41,6 @@
             align-items: center;
         }
 
-        /* Banner superior con tamaño y posición fijos para los 4 logotipos */
         .brand-banner {
             width: 100%;
             height: 86px;
@@ -53,7 +52,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: rgba(246, 183, 95, 0.34);
+            background-color: #fce7c9;
             padding: 6px 16px;
             transition: background-color 0.25s ease;
         }
@@ -134,10 +133,9 @@
             box-shadow: 0 12px 28px rgba(100, 116, 139, 0.16);
             touch-action: none;
             cursor: pointer;
-            background-color: #ffffff;
+            background-color: #fce7c9;
         }
 
-        /* Sin efecto velado: fondo limpio y tarjetas nítidas */
         .overlay-screen {
             position: absolute;
             inset: 0;
@@ -199,11 +197,10 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
-        /* Colores puros al 34% sobre fondo blanco sin velo extra */
-        .card-giraffe { background-color: rgba(246, 183, 95, 0.34); color: #78350f; }
-        .card-panda { background-color: rgba(255, 185, 185, 0.34); color: #881337; }
-        .card-crocodile { background-color: rgba(126, 217, 87, 0.34); color: #064e3b; }
-        .card-monkey { background-color: rgba(255, 220, 79, 0.34); color: #713f12; }
+        .card-giraffe { background-color: #fce7c9; color: #78350f; }
+        .card-panda { background-color: #ffe7e7; color: #881337; }
+        .card-crocodile { background-color: #d3f2c6; color: #064e3b; }
+        .card-monkey { background-color: #fff3c3; color: #713f12; }
 
         .character-card img {
             width: 54px;
@@ -323,12 +320,10 @@
 <body id="pageBody">
 
     <div class="container">
-        <!-- Logo Superior con tamaño fijo -->
         <div id="brandBanner" class="brand-banner">
             <img id="logoImage" src="logo-jirafa.png" alt="SOYAJOY">
         </div>
 
-        <!-- Barra de Estadísticas -->
         <div class="stats-bar">
             <div class="lives-box">
                 <span class="stat-label">Vite</span>
@@ -348,11 +343,9 @@
             </div>
         </div>
 
-        <!-- Área de Juego -->
         <div id="canvasWrapper" class="canvas-wrapper">
             <canvas id="gameCanvas"></canvas>
 
-            <!-- Pantalla Inicial -->
             <div id="startScreen" class="overlay-screen">
                 <h1 id="welcomeTitle" class="title-main font-game">Ciao! Scegli il tuo amico!</h1>
                 <p class="subtitle-main">Tocca un animale per giocare e mangiare la sua frutta preferita e la soia</p>
@@ -378,7 +371,7 @@
 
                     <button type="button" data-char="monkey" onclick="handleSelectChar('monkey')" class="character-card card-monkey">
                         <img src="mono.png" alt="Mono">
-                        <span class="char-name font-game">Scimmia</span>
+                        <span class="char-name font-game">Mono</span>
                         <span class="char-fruit">🍌 Banana</span>
                     </button>
                 </div>
@@ -399,7 +392,6 @@
                 </button>
             </div>
 
-            <!-- Pantalla Pausa -->
             <div id="pauseScreen" class="overlay-screen" style="display: none;">
                 <div style="font-size: 46px; margin-bottom: 8px;">⏸️</div>
                 <h2 class="font-game" style="font-size: 30px; color: #0ea5e9; margin-bottom: 16px;">Gioco in Pausa</h2>
@@ -414,7 +406,6 @@
                 </button>
             </div>
 
-            <!-- Pantalla Fin del Juego -->
             <div id="gameOverScreen" class="overlay-screen" style="display: none;">
                 <div style="font-size: 46px; margin-bottom: 6px;">🌟</div>
                 <h2 class="font-game" style="font-size: 32px; color: #f43f5e; margin-bottom: 4px;">Bravissimo!</h2>
@@ -440,7 +431,6 @@
             </div>
         </div>
 
-        <!-- Barra Inferior -->
         <div class="footer-bar">
             <span>Muovi con il dito, il mouse o le frecce ⬅️ ➡️</span>
             <button type="button" onclick="togglePause()" class="btn-pause">Pausa ⏸️</button>
@@ -503,6 +493,7 @@
             } catch (e) {}
         }
 
+        // Colores sólidos equivalentes al 34% sobre fondo blanco para evitar velo sobre las frutas
         const CHARACTERS = {
             giraffe: {
                 id: 'giraffe',
@@ -510,7 +501,7 @@
                 fallbackEmoji: '🦒',
                 logoSrc: 'logo-jirafa.png',
                 animalSrc: 'jirafa.png',
-                bgRgba: 'rgba(246, 183, 95, 0.34)',
+                bgSolid: '#fce7c9',
                 fruitEmoji: '🍑',
                 fruitName: 'pesche',
                 titleColor: '#d97706',
@@ -528,7 +519,7 @@
                 fallbackEmoji: '🐯',
                 logoSrc: 'logo-panda.png',
                 animalSrc: 'panda.png',
-                bgRgba: 'rgba(255, 185, 185, 0.34)',
+                bgSolid: '#ffe7e7',
                 fruitEmoji: '🍓',
                 fruitName: 'fragole',
                 titleColor: '#e11d48',
@@ -546,7 +537,7 @@
                 fallbackEmoji: '🐊',
                 logoSrc: 'logo-cocodrilo.png',
                 animalSrc: 'cocodrilo.png',
-                bgRgba: 'rgba(126, 217, 87, 0.34)',
+                bgSolid: '#d3f2c6',
                 fruitEmoji: '🍐',
                 fruitName: 'pere',
                 titleColor: '#15803d',
@@ -564,7 +555,7 @@
                 fallbackEmoji: '🐒',
                 logoSrc: 'logo-mono.png',
                 animalSrc: 'mono.png',
-                bgRgba: 'rgba(255, 220, 79, 0.34)',
+                bgSolid: '#fff3c3',
                 fruitEmoji: '🍌',
                 fruitName: 'banane',
                 titleColor: '#ca8a04',
@@ -626,6 +617,8 @@
         let spawnTimer = 0;
         let elapsedPlayTime = 0;
         let animFrameId = null;
+        let logicalWidth = 400;
+        let logicalHeight = 450;
         const BASE_SPAWN_INTERVAL = 1600;
 
         const player = {
@@ -651,10 +644,10 @@
             selectedCharKey = charKey;
             const cfg = CHARACTERS[charKey];
 
-            brandBanner.style.backgroundColor = cfg.bgRgba;
+            brandBanner.style.backgroundColor = cfg.bgSolid;
             logoImage.src = cfg.logoSrc;
-            pageBody.style.backgroundColor = cfg.bgRgba;
-            canvas.style.backgroundColor = '#ffffff';
+            pageBody.style.backgroundColor = cfg.bgSolid;
+            canvas.style.backgroundColor = cfg.bgSolid;
 
             welcomeTitle.style.color = cfg.titleColor;
             startBtn.style.background = cfg.btnGradient;
@@ -673,15 +666,20 @@
 
         function resizeCanvas() {
             const rect = canvasWrapper.getBoundingClientRect();
-            canvas.width = rect.width > 0 ? rect.width : 400;
-            canvas.height = rect.height > 0 ? rect.height : 450;
+            const dpr = Math.min(window.devicePixelRatio || 1, 3);
+            logicalWidth = rect.width > 0 ? rect.width : 400;
+            logicalHeight = rect.height > 0 ? rect.height : 450;
 
-            player.width = Math.max(92, canvas.width * 0.25);
+            canvas.width = Math.round(logicalWidth * dpr);
+            canvas.height = Math.round(logicalHeight * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            player.width = Math.max(92, logicalWidth * 0.25);
             player.height = player.width * 1.05;
-            player.y = canvas.height - player.height - 10;
+            player.y = logicalHeight - player.height - 10;
 
             if (gameState === 'START') {
-                player.x = canvas.width / 2 - player.width / 2;
+                player.x = logicalWidth / 2 - player.width / 2;
             } else {
                 clampPlayerPosition();
             }
@@ -721,13 +719,12 @@
 
         function clampPlayerPosition() {
             if (player.x < 0) player.x = 0;
-            if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
+            if (player.x > logicalWidth - player.width) player.x = logicalWidth - player.width;
         }
 
-        // Progresión de velocidad más notoria con el tiempo y los puntos
         function getDifficultyFactor() {
-            const timeBonus = Math.min(180, elapsedPlayTime * 3.2); // +3.2 px/s cada segundo
-            const scoreBonus = Math.min(140, score * 0.65);         // +0.65 px/s por punto
+            const timeBonus = Math.min(180, elapsedPlayTime * 3.2);
+            const scoreBonus = Math.min(140, score * 0.65);
             return timeBonus + scoreBonus;
         }
 
@@ -742,12 +739,12 @@
                 chosenTemplate = BAD_ITEMS[Math.floor(Math.random() * BAD_ITEMS.length)];
             }
 
-            const size = isGood ? Math.max(38, canvas.width * 0.105) : Math.max(32, canvas.width * 0.085);
+            const size = isGood ? Math.max(40, logicalWidth * 0.11) : Math.max(34, logicalWidth * 0.09);
             const baseSpeed = isGood ? (110 + Math.random() * 25) : (102 + Math.random() * 22);
             const progressiveSpeed = getDifficultyFactor();
 
             items.push({
-                x: Math.random() * (canvas.width - size),
+                x: Math.random() * (logicalWidth - size),
                 y: -size,
                 size: size,
                 speed: baseSpeed + progressiveSpeed,
@@ -771,18 +768,20 @@
 
         function drawCanvasBackground() {
             const cfg = CHARACTERS[selectedCharKey];
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = cfg.bgRgba;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.globalAlpha = 1.0;
+            ctx.fillStyle = cfg.bgSolid;
+            ctx.fillRect(0, 0, logicalWidth, logicalHeight);
+            ctx.restore();
         }
 
         function drawPlayer(dt) {
             const cfg = CHARACTERS[selectedCharKey];
             const img = loadedAnimalImgs[selectedCharKey];
             ctx.save();
+            ctx.globalAlpha = 1.0;
 
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
             ctx.beginPath();
             ctx.ellipse(
                 player.x + player.width / 2,
@@ -806,7 +805,7 @@
             if (img && img.complete && img.naturalWidth > 0) {
                 ctx.drawImage(img, -player.width / 2, -player.height, player.width, player.height);
             } else {
-                ctx.font = `${player.width * 0.85}px sans-serif`;
+                ctx.font = `${player.width * 0.85}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'bottom';
                 ctx.fillText(cfg.fallbackEmoji, 0, 0);
@@ -818,11 +817,13 @@
         function drawItems() {
             items.forEach(item => {
                 ctx.save();
+                ctx.globalAlpha = 1.0;
                 ctx.translate(item.x + item.size / 2, item.y + item.size / 2);
                 ctx.rotate(item.rotation);
-                ctx.font = `${item.size}px sans-serif`;
+                ctx.font = `${item.size}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#000000';
                 ctx.fillText(item.emoji, 0, 0);
                 ctx.restore();
             });
@@ -856,7 +857,6 @@
             if (keys.right) player.x += player.speed * dt;
             clampPlayerPosition();
 
-            // También aumenta el ritmo de aparición de frutas con el tiempo
             spawnTimer += dt * 1000;
             const intervalReduction = Math.min(950, (elapsedPlayTime * 15) + (score * 2.5));
             const currentInterval = Math.max(650, BASE_SPAWN_INTERVAL - intervalReduction);
@@ -905,7 +905,7 @@
                     continue;
                 }
 
-                if (item.y > canvas.height + 50) {
+                if (item.y > logicalHeight + 50) {
                     if (item.isGood) {
                         combo = 0;
                         updateUI();
@@ -916,7 +916,7 @@
         }
 
         function render(dt) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, logicalWidth, logicalHeight);
             drawCanvasBackground();
             drawPlayer(dt);
             drawItems();
@@ -971,7 +971,7 @@
             gameOverScreen.style.display = 'none';
 
             gameState = 'PLAYING';
-            player.x = canvas.width / 2 - player.width / 2;
+            player.x = logicalWidth / 2 - player.width / 2;
             spawnItem();
             render(0);
             animFrameId = requestAnimationFrame(gameLoop);
