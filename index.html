@@ -14,7 +14,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #fef5d4;
+            background-color: rgba(255, 185, 185, 0.34);
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
@@ -51,12 +51,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #fef5d4;
+            background-color: rgba(255, 185, 185, 0.34);
             padding: 6px 16px;
+            transition: background-color 0.25s ease;
         }
 
         .brand-banner img {
-            max-height: 82px;
+            max-height: 80px;
             width: auto;
             object-fit: contain;
             pointer-events: none;
@@ -116,9 +117,9 @@
         .canvas-wrapper {
             position: relative;
             width: 100%;
-            aspect-ratio: 4 / 4.4;
-            max-height: 64vh;
-            min-height: 330px;
+            aspect-ratio: 4 / 4.5;
+            max-height: 66vh;
+            min-height: 360px;
         }
 
         #gameCanvas {
@@ -129,6 +130,7 @@
             box-shadow: 0 12px 28px rgba(100, 116, 139, 0.16);
             touch-action: none;
             cursor: pointer;
+            background-color: #ffffff;
         }
 
         .overlay-screen {
@@ -138,45 +140,47 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 18px;
+            padding: 14px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             border: 3px solid #ffffff;
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             z-index: 30;
+            overflow-y: auto;
         }
 
         .title-main {
-            font-size: 25px;
-            color: #d97706;
-            margin-bottom: 4px;
+            font-size: 23px;
+            color: #e11d48;
+            margin-bottom: 2px;
         }
 
         .subtitle-main {
-            font-size: 13px;
+            font-size: 12px;
             color: #475569;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             font-weight: 600;
             max-width: 340px;
         }
 
+        /* Cuadrícula 2x2 para los 4 animales */
         .char-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
             width: 100%;
-            max-width: 420px;
-            margin-bottom: 16px;
+            max-width: 360px;
+            margin-bottom: 10px;
         }
 
         .character-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 6px;
-            border-radius: 18px;
-            border: 4px solid transparent;
+            padding: 7px 6px;
+            border-radius: 16px;
+            border: 3px solid transparent;
             cursor: pointer;
             touch-action: manipulation;
             transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
@@ -187,20 +191,22 @@
         }
 
         .character-card.selected {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: scale(1.03);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
-        .card-giraffe { background-color: #fef5d4; color: #78350f; }
-        .card-panda { background-color: #fce2e6; color: #831843; }
-        .card-crocodile { background-color: #d7f5cb; color: #064e3b; }
+        /* Colores exactos al 34% de transparencia */
+        .card-giraffe { background-color: rgba(255, 185, 185, 0.34); color: #881337; }
+        .card-panda { background-color: rgba(246, 183, 95, 0.34); color: #78350f; }
+        .card-crocodile { background-color: rgba(126, 217, 87, 0.34); color: #064e3b; }
+        .card-monkey { background-color: rgba(255, 220, 79, 0.34); color: #713f12; }
 
         .character-card img {
-            width: 68px;
-            height: 68px;
+            width: 52px;
+            height: 52px;
             object-fit: contain;
-            margin-bottom: 4px;
-            border-radius: 10px;
+            margin-bottom: 2px;
+            border-radius: 8px;
             pointer-events: none;
         }
 
@@ -212,10 +218,10 @@
         .char-fruit {
             font-size: 11px;
             font-weight: 700;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             padding: 2px 8px;
             border-radius: 99px;
-            margin-top: 4px;
+            margin-top: 2px;
             pointer-events: none;
         }
 
@@ -225,12 +231,12 @@
             gap: 8px;
             font-size: 12px;
             background: #ffffff;
-            padding: 10px 12px;
-            border-radius: 16px;
-            margin-bottom: 16px;
+            padding: 8px 10px;
+            border-radius: 14px;
+            margin-bottom: 12px;
             width: 100%;
             max-width: 340px;
-            border: 2px solid #fcd34d;
+            border: 2px solid #ffb9b9;
         }
 
         .legend-item {
@@ -243,14 +249,14 @@
 
         .btn-primary {
             color: #ffffff;
-            font-size: 22px;
-            padding: 12px 44px;
+            font-size: 20px;
+            padding: 10px 40px;
             border-radius: 999px;
             border: 2px solid #ffffff;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             cursor: pointer;
             touch-action: manipulation;
-            background: linear-gradient(90deg, #f59e0b, #f97316);
+            background: linear-gradient(90deg, #f43f5e, #fb7185);
         }
 
         .btn-primary:active {
@@ -348,7 +354,7 @@
                 <p class="subtitle-main">Tocca un animale per giocare e mangiare la sua frutta preferita e la soia</p>
 
                 <div class="char-grid">
-                    <button type="button" data-char="giraffe" onclick="handleSelectChar('giraffe')" class="character-card card-giraffe selected" style="border-color: #f59e0b;">
+                    <button type="button" data-char="giraffe" onclick="handleSelectChar('giraffe')" class="character-card card-giraffe selected" style="border-color: #f43f5e;">
                         <img src="jirafa.png" alt="Giraffa">
                         <span class="char-name font-game">Giraffa</span>
                         <span class="char-fruit">🍑 Pesca</span>
@@ -363,7 +369,13 @@
                     <button type="button" data-char="crocodile" onclick="handleSelectChar('crocodile')" class="character-card card-crocodile">
                         <img src="cocodrilo.png" alt="Coccodrillo">
                         <span class="char-name font-game">Coccodrillo</span>
-                        <span class="char-fruit">🍋 Limone</span>
+                        <span class="char-fruit">🍐 Pera</span>
+                    </button>
+
+                    <button type="button" data-char="monkey" onclick="handleSelectChar('monkey')" class="character-card card-monkey">
+                        <img src="mono.png" alt="Scimmia">
+                        <span class="char-name font-game">Scimmia</span>
+                        <span class="char-fruit">🍌 Banana</span>
                     </button>
                 </div>
 
@@ -487,6 +499,11 @@
             } catch (e) {}
         }
 
+        // Colores exactos al 34% de transparencia:
+        // #ffb9b9 -> rgba(255, 185, 185, 0.34) (jirafa)
+        // #f6b75f -> rgba(246, 183, 95, 0.34)  (panda)
+        // #7ed957 -> rgba(126, 217, 87, 0.34)  (cocodrilo)
+        // #ffdc4f -> rgba(255, 220, 79, 0.34)  (mono)
         const CHARACTERS = {
             giraffe: {
                 id: 'giraffe',
@@ -494,15 +511,13 @@
                 fallbackEmoji: '🦒',
                 logoSrc: 'logo-jirafa.png',
                 animalSrc: 'jirafa.png',
-                bannerBg: '#fef5d4',
+                bgRgba: 'rgba(255, 185, 185, 0.34)',
                 fruitEmoji: '🍑',
                 fruitName: 'pesche',
-                pageBg: '#fef5d4',
-                canvasGradient: ['#fef9e3', '#fdebc8'],
-                titleColor: '#d97706',
-                btnGradient: 'linear-gradient(90deg, #f59e0b, #f97316)',
-                borderColor: '#f59e0b',
-                legendBorder: '#fcd34d',
+                titleColor: '#e11d48',
+                btnGradient: 'linear-gradient(90deg, #f43f5e, #fb7185)',
+                borderColor: '#f43f5e',
+                legendBorder: '#ffb9b9',
                 goodItems: [
                     { emoji: '🍑', name: 'Pesca' },
                     { emoji: '🌱', name: 'Soia' }
@@ -514,15 +529,13 @@
                 fallbackEmoji: '🐼',
                 logoSrc: 'logo-panda.png',
                 animalSrc: 'panda.png',
-                bannerBg: '#fce2e6',
+                bgRgba: 'rgba(246, 183, 95, 0.34)',
                 fruitEmoji: '🍓',
                 fruitName: 'fragole',
-                pageBg: '#fce2e6',
-                canvasGradient: ['#fce8eb', '#fad4db'],
-                titleColor: '#db2777',
-                btnGradient: 'linear-gradient(90deg, #ec4899, #f43f5e)',
-                borderColor: '#ec4899',
-                legendBorder: '#f9a8d4',
+                titleColor: '#d97706',
+                btnGradient: 'linear-gradient(90deg, #f59e0b, #d97706)',
+                borderColor: '#d97706',
+                legendBorder: '#f6b75f',
                 goodItems: [
                     { emoji: '🍓', name: 'Fragola' },
                     { emoji: '🌱', name: 'Soia' }
@@ -534,17 +547,33 @@
                 fallbackEmoji: '🐊',
                 logoSrc: 'logo-cocodrilo.png',
                 animalSrc: 'cocodrilo.png',
-                bannerBg: '#d7f5cb',
-                fruitEmoji: '🍋',
-                fruitName: 'limoni',
-                pageBg: '#d7f5cb',
-                canvasGradient: ['#e2f8d8', '#c7f0b6'],
-                titleColor: '#059669',
-                btnGradient: 'linear-gradient(90deg, #10b981, #16a34a)',
-                borderColor: '#10b981',
-                legendBorder: '#6ee7b7',
+                bgRgba: 'rgba(126, 217, 87, 0.34)',
+                fruitEmoji: '🍐',
+                fruitName: 'pere',
+                titleColor: '#15803d',
+                btnGradient: 'linear-gradient(90deg, #22c55e, #16a34a)',
+                borderColor: '#16a34a',
+                legendBorder: '#7ed957',
                 goodItems: [
-                    { emoji: '🍋', name: 'Limone' },
+                    { emoji: '🍐', name: 'Pera' },
+                    { emoji: '🌱', name: 'Soia' }
+                ]
+            },
+            monkey: {
+                id: 'monkey',
+                name: 'la Scimmia',
+                fallbackEmoji: '🐒',
+                logoSrc: 'logo-mono.png',
+                animalSrc: 'mono.png',
+                bgRgba: 'rgba(255, 220, 79, 0.34)',
+                fruitEmoji: '🍌',
+                fruitName: 'banane',
+                titleColor: '#ca8a04',
+                btnGradient: 'linear-gradient(90deg, #eab308, #f59e0b)',
+                borderColor: '#eab308',
+                legendBorder: '#ffdc4f',
+                goodItems: [
+                    { emoji: '🍌', name: 'Banana' },
                     { emoji: '🌱', name: 'Soia' }
                 ]
             }
@@ -596,8 +625,9 @@
 
         let lastTime = 0;
         let spawnTimer = 0;
+        let elapsedPlayTime = 0; // Tiempo jugado para progresión suave de velocidad
         let animFrameId = null;
-        const BASE_SPAWN_INTERVAL = 1550;
+        const BASE_SPAWN_INTERVAL = 1750; // Ritmo inicial muy tranquilo para niños
 
         const player = {
             x: 150,
@@ -622,10 +652,10 @@
             selectedCharKey = charKey;
             const cfg = CHARACTERS[charKey];
 
-            brandBanner.style.backgroundColor = cfg.bannerBg;
+            brandBanner.style.backgroundColor = cfg.bgRgba;
             logoImage.src = cfg.logoSrc;
-            pageBody.style.backgroundColor = cfg.pageBg;
-            canvas.style.background = `linear-gradient(180deg, ${cfg.canvasGradient[0]} 0%, ${cfg.canvasGradient[1]} 100%)`;
+            pageBody.style.backgroundColor = cfg.bgRgba;
+            canvas.style.backgroundColor = '#ffffff';
 
             welcomeTitle.style.color = cfg.titleColor;
             startBtn.style.background = cfg.btnGradient;
@@ -639,14 +669,13 @@
             });
 
             resizeCanvas();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlayer(0);
+            render(0);
         }
 
         function resizeCanvas() {
             const rect = canvasWrapper.getBoundingClientRect();
             canvas.width = rect.width > 0 ? rect.width : 400;
-            canvas.height = rect.height > 0 ? rect.height : 440;
+            canvas.height = rect.height > 0 ? rect.height : 450;
 
             player.width = Math.max(92, canvas.width * 0.25);
             player.height = player.width * 1.05;
@@ -696,6 +725,13 @@
             if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
         }
 
+        // Factor de dificultad suave (aumenta despacio con el tiempo y los puntos)
+        function getDifficultyFactor() {
+            const timeBonus = Math.min(85, elapsedPlayTime * 1.1); // +1.1 px/s cada segundo
+            const scoreBonus = Math.min(75, score * 0.25);         // +0.25 px/s por cada punto
+            return timeBonus + scoreBonus;
+        }
+
         function spawnItem() {
             const cfg = CHARACTERS[selectedCharKey];
             const isGood = Math.random() > 0.22;
@@ -708,18 +744,19 @@
             }
 
             const size = isGood ? Math.max(38, canvas.width * 0.105) : Math.max(32, canvas.width * 0.085);
-            const baseSpeed = isGood ? (115 + Math.random() * 35) : (105 + Math.random() * 25);
-            const gentleProgression = Math.min(95, score * 0.8);
+            // Velocidad inicial lenta para niños (~95-115 px/s) + aumento progresivo suave
+            const baseSpeed = isGood ? (95 + Math.random() * 22) : (88 + Math.random() * 20);
+            const progressiveSpeed = getDifficultyFactor();
 
             items.push({
                 x: Math.random() * (canvas.width - size),
                 y: -size,
                 size: size,
-                speed: baseSpeed + gentleProgression,
+                speed: baseSpeed + progressiveSpeed,
                 emoji: chosenTemplate.emoji,
                 isGood: isGood,
                 rotation: 0,
-                rotSpeed: (Math.random() - 0.5) * 1.2
+                rotSpeed: (Math.random() - 0.5) * 1.1
             });
         }
 
@@ -732,6 +769,14 @@
                 opacity: 1.0,
                 vy: -48
             });
+        }
+
+        function drawCanvasBackground() {
+            const cfg = CHARACTERS[selectedCharKey];
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = cfg.bgRgba;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
         function drawPlayer(dt) {
@@ -807,12 +852,17 @@
         }
 
         function update(dt) {
+            elapsedPlayTime += dt;
+
             if (keys.left) player.x -= player.speed * dt;
             if (keys.right) player.x += player.speed * dt;
             clampPlayerPosition();
 
+            // También se reduce ligeramente el tiempo entre frutas de forma gradual (mínimo 880 ms)
             spawnTimer += dt * 1000;
-            const currentInterval = Math.max(920, BASE_SPAWN_INTERVAL - (score * 4));
+            const intervalReduction = Math.min(850, (elapsedPlayTime * 7) + (score * 1.5));
+            const currentInterval = Math.max(880, BASE_SPAWN_INTERVAL - intervalReduction);
+
             if (spawnTimer >= currentInterval) {
                 spawnItem();
                 spawnTimer = 0;
@@ -869,6 +919,7 @@
 
         function render(dt) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCanvasBackground();
             drawPlayer(dt);
             drawItems();
             drawParticles(dt);
@@ -908,9 +959,10 @@
             score = 0;
             lives = 3;
             combo = 0;
+            elapsedPlayTime = 0;
             items = [];
             particles = [];
-            spawnTimer = BASE_SPAWN_INTERVAL;
+            spawnTimer = 0;
             lastTime = performance.now();
 
             updateUI();
@@ -936,8 +988,7 @@
             gameOverScreen.style.display = 'none';
             startScreen.style.display = 'flex';
             resizeCanvas();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlayer(0);
+            render(0);
         }
 
         function togglePause() {
