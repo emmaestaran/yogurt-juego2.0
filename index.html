@@ -41,8 +41,10 @@
             align-items: center;
         }
 
+        /* Banner superior con tamaño y posición fijos para los 4 logotipos */
         .brand-banner {
             width: 100%;
+            height: 86px;
             margin-bottom: 10px;
             border-radius: 16px;
             overflow: hidden;
@@ -57,9 +59,11 @@
         }
 
         .brand-banner img {
-            max-height: 80px;
-            width: auto;
+            width: 240px;
+            height: 70px;
             object-fit: contain;
+            object-position: center;
+            display: block;
             pointer-events: none;
         }
 
@@ -71,7 +75,7 @@
             margin-bottom: 10px;
             padding: 8px 16px;
             border-radius: 16px;
-            background: rgba(255, 255, 255, 0.92);
+            background: #ffffff;
             border: 2px solid #ffffff;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
         }
@@ -133,6 +137,7 @@
             background-color: #ffffff;
         }
 
+        /* Sin efecto velado: fondo limpio y tarjetas nítidas */
         .overlay-screen {
             position: absolute;
             inset: 0;
@@ -142,7 +147,7 @@
             justify-content: center;
             padding: 14px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.96);
+            background-color: #ffffff;
             border: 3px solid #ffffff;
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
@@ -164,7 +169,6 @@
             max-width: 340px;
         }
 
-        /* Cuadrícula 2x2 para los 4 animales */
         .char-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -195,15 +199,15 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
-        /* Colores invertidos entre Jirafa (#f6b75f) y Tigre (#ffb9b9) al 34% */
+        /* Colores puros al 34% sobre fondo blanco sin velo extra */
         .card-giraffe { background-color: rgba(246, 183, 95, 0.34); color: #78350f; }
         .card-panda { background-color: rgba(255, 185, 185, 0.34); color: #881337; }
         .card-crocodile { background-color: rgba(126, 217, 87, 0.34); color: #064e3b; }
         .card-monkey { background-color: rgba(255, 220, 79, 0.34); color: #713f12; }
 
         .character-card img {
-            width: 52px;
-            height: 52px;
+            width: 54px;
+            height: 54px;
             object-fit: contain;
             margin-bottom: 2px;
             border-radius: 8px;
@@ -218,7 +222,7 @@
         .char-fruit {
             font-size: 11px;
             font-weight: 700;
-            background: rgba(255, 255, 255, 0.92);
+            background: #ffffff;
             padding: 2px 8px;
             border-radius: 99px;
             margin-top: 2px;
@@ -305,7 +309,7 @@
         }
 
         .btn-pause {
-            background: rgba(255, 255, 255, 0.9);
+            background: #ffffff;
             border: 1px solid #cbd5e1;
             padding: 6px 12px;
             border-radius: 12px;
@@ -319,7 +323,7 @@
 <body id="pageBody">
 
     <div class="container">
-        <!-- Logo Superior -->
+        <!-- Logo Superior con tamaño fijo -->
         <div id="brandBanner" class="brand-banner">
             <img id="logoImage" src="logo-jirafa.png" alt="SOYAJOY">
         </div>
@@ -499,11 +503,6 @@
             } catch (e) {}
         }
 
-        // Colores invertidos entre Jirafa (#f6b75f) y Tigre (#ffb9b9) al 34% de transparencia:
-        // #f6b75f -> rgba(246, 183, 95, 0.34)  (jirafa)
-        // #ffb9b9 -> rgba(255, 185, 185, 0.34) (tigre - archivos logo-panda.png y panda.png)
-        // #7ed957 -> rgba(126, 217, 87, 0.34)  (cocodrilo)
-        // #ffdc4f -> rgba(255, 220, 79, 0.34)  (mono)
         const CHARACTERS = {
             giraffe: {
                 id: 'giraffe',
@@ -627,14 +626,14 @@
         let spawnTimer = 0;
         let elapsedPlayTime = 0;
         let animFrameId = null;
-        const BASE_SPAWN_INTERVAL = 1750;
+        const BASE_SPAWN_INTERVAL = 1600;
 
         const player = {
             x: 150,
             y: 300,
             width: 105,
             height: 110,
-            speed: 440,
+            speed: 460,
             eatScale: 0
         };
 
@@ -725,15 +724,16 @@
             if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
         }
 
+        // Progresión de velocidad más notoria con el tiempo y los puntos
         function getDifficultyFactor() {
-            const timeBonus = Math.min(85, elapsedPlayTime * 1.1);
-            const scoreBonus = Math.min(75, score * 0.25);
+            const timeBonus = Math.min(180, elapsedPlayTime * 3.2); // +3.2 px/s cada segundo
+            const scoreBonus = Math.min(140, score * 0.65);         // +0.65 px/s por punto
             return timeBonus + scoreBonus;
         }
 
         function spawnItem() {
             const cfg = CHARACTERS[selectedCharKey];
-            const isGood = Math.random() > 0.22;
+            const isGood = Math.random() > 0.24;
 
             let chosenTemplate;
             if (isGood) {
@@ -743,7 +743,7 @@
             }
 
             const size = isGood ? Math.max(38, canvas.width * 0.105) : Math.max(32, canvas.width * 0.085);
-            const baseSpeed = isGood ? (95 + Math.random() * 22) : (88 + Math.random() * 20);
+            const baseSpeed = isGood ? (110 + Math.random() * 25) : (102 + Math.random() * 22);
             const progressiveSpeed = getDifficultyFactor();
 
             items.push({
@@ -754,7 +754,7 @@
                 emoji: chosenTemplate.emoji,
                 isGood: isGood,
                 rotation: 0,
-                rotSpeed: (Math.random() - 0.5) * 1.1
+                rotSpeed: (Math.random() - 0.5) * 1.2
             });
         }
 
@@ -856,9 +856,10 @@
             if (keys.right) player.x += player.speed * dt;
             clampPlayerPosition();
 
+            // También aumenta el ritmo de aparición de frutas con el tiempo
             spawnTimer += dt * 1000;
-            const intervalReduction = Math.min(850, (elapsedPlayTime * 7) + (score * 1.5));
-            const currentInterval = Math.max(880, BASE_SPAWN_INTERVAL - intervalReduction);
+            const intervalReduction = Math.min(950, (elapsedPlayTime * 15) + (score * 2.5));
+            const currentInterval = Math.max(650, BASE_SPAWN_INTERVAL - intervalReduction);
 
             if (spawnTimer >= currentInterval) {
                 spawnItem();
