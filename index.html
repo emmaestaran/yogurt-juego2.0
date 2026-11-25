@@ -874,4 +874,152 @@
                 const hitX = item.x + item.size * (1 - padding) > player.x + player.width * 0.1 &&
                              item.x + item.size * padding < player.x + player.width * 0.9;
                 const hitY = item.y + item.size * (1 - padding) > player.y + player.height * 0.15 &&
-                             item.y + item.size
+                             item.y + item.size * padding < player.y + player.height * 0.95;
+
+                if (hitX && hitY) {
+                    if (item.isGood) {
+                        combo++;
+                        const comboBonus = combo > 3 ? 2 : 1;
+                        const pts = 10 * comboBonus;
+                        score += pts;
+                        player.eatScale = 1.0;
+
+                        playSound(combo > 3 ? 'combo' : 'catch');
+                        createParticle(item.x + item.size / 2, item.y, `+${pts} ${combo > 3 ? '⭐' : '😋'}`, '#059669');
+                    } else {
+                        combo = 0;
+                        lives--;
+                        playSound('bad');
+                        createParticle(item.x + item.size / 2, item.y, '-1 ❤️', '#e11d48');
+                        updateLivesUI();
+
+                        if (lives <= 0) {
+                            endGame();
+                            return;
+                        }
+                    }
+
+                    updateUI();
+                    items.splice(i, 1);
+                    continue;
+                }
+
+                if (item.y > canvas.height + 50) {
+                    if (item.isGood) {
+                        combo = 0;
+                        updateUI();
+                    }
+                    items.splice(i, 1);
+                }
+            }
+        }
+
+        function render(dt) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCanvasBackground();
+            drawPlayer(dt);
+            drawItems();
+            drawParticles(dt);
+        }
+
+        function gameLoop(timestamp) {
+            if (gameState !== 'PLAYING') return;
+
+            if (!lastTime) lastTime = timestamp;
+            const dt = Math.min(0.08, (timestamp - lastTime) / 1000);
+            lastTime = timestamp;
+
+            update(dt);
+            render(dt);
+
+            animFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function updateUI() {
+            scoreDisplay.textContent = score;
+            comboDisplay.textContent = `x${Math.max(1, combo)}`;
+        }
+
+        function updateLivesUI() {
+            livesContainer.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('span');
+                heart.textContent = i < lives ? '❤️' : '🤍';
+                livesContainer.appendChild(heart);
+            }
+        }
+
+        function startGame() {
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            initAudio();
+            resizeCanvas();
+            score = 0;
+            lives = 3;
+            combo = 0;
+            elapsedPlayTime = 0;
+            items = [];
+            particles = [];
+            spawnTimer = 0;
+            lastTime = performance.now();
+
+            updateUI();
+            updateLivesUI();
+
+            startScreen.style.display = 'none';
+            pauseScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+
+            gameState = 'PLAYING';
+            player.x = canvas.width / 2 - player.width / 2;
+            spawnItem();
+            render(0);
+            animFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function showCharacterSelection() {
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            gameState = 'START';
+            items = [];
+            particles = [];
+            pauseScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+            resizeCanvas();
+            render(0);
+        }
+
+        function togglePause() {
+            if (gameState === 'PLAYING') {
+                gameState = 'PAUSED';
+                if (animFrameId) cancelAnimationFrame(animFrameId);
+                pauseScreen.style.display = 'flex';
+            } else if (gameState === 'PAUSED') {
+                gameState = 'PLAYING';
+                pauseScreen.style.display = 'none';
+                lastTime = performance.now();
+                animFrameId = requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function endGame() {
+            gameState = 'GAMEOVER';
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            const cfg = CHARACTERS[selectedCharKey];
+            if (score > highScore) {
+                highScore = score;
+                try {
+                    localStorage.setItem('soyajoy_high_score', highScore);
+                } catch (e) {}
+            }
+
+            document.getElementById('gameOverSubtitle').textContent =
+                `Ottimo lavoro con ${cfg.name}, le sue ${cfg.fruitName} e la soia!`;
+            finalScoreDisplay.textContent = score;
+            highScoreDisplay.textContent = highScore;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        selectCharacter('giraffe');
+    </script>
+</body>
+</html>
