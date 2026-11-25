@@ -14,7 +14,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: rgba(255, 185, 185, 0.34);
+            background-color: rgba(246, 183, 95, 0.34);
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
@@ -51,7 +51,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: rgba(255, 185, 185, 0.34);
+            background-color: rgba(246, 183, 95, 0.34);
             padding: 6px 16px;
             transition: background-color 0.25s ease;
         }
@@ -152,7 +152,7 @@
 
         .title-main {
             font-size: 23px;
-            color: #e11d48;
+            color: #d97706;
             margin-bottom: 2px;
         }
 
@@ -195,9 +195,9 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
-        /* Colores exactos al 34% de transparencia */
-        .card-giraffe { background-color: rgba(255, 185, 185, 0.34); color: #78350f; }
-        .card-panda { background-color: rgba(246, 183, 95, 0.34); color: #881337; }
+        /* Colores invertidos entre Jirafa (#f6b75f) y Tigre (#ffb9b9) al 34% */
+        .card-giraffe { background-color: rgba(246, 183, 95, 0.34); color: #78350f; }
+        .card-panda { background-color: rgba(255, 185, 185, 0.34); color: #881337; }
         .card-crocodile { background-color: rgba(126, 217, 87, 0.34); color: #064e3b; }
         .card-monkey { background-color: rgba(255, 220, 79, 0.34); color: #713f12; }
 
@@ -236,7 +236,7 @@
             margin-bottom: 12px;
             width: 100%;
             max-width: 340px;
-            border: 2px solid #ffb9b9;
+            border: 2px solid #f6b75f;
         }
 
         .legend-item {
@@ -256,7 +256,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             cursor: pointer;
             touch-action: manipulation;
-            background: linear-gradient(90deg, #f43f5e, #fb7185);
+            background: linear-gradient(90deg, #f59e0b, #d97706);
         }
 
         .btn-primary:active {
@@ -354,14 +354,14 @@
                 <p class="subtitle-main">Tocca un animale per giocare e mangiare la sua frutta preferita e la soia</p>
 
                 <div class="char-grid">
-                    <button type="button" data-char="giraffe" onclick="handleSelectChar('giraffe')" class="character-card card-giraffe selected" style="border-color: #f43f5e;">
+                    <button type="button" data-char="giraffe" onclick="handleSelectChar('giraffe')" class="character-card card-giraffe selected" style="border-color: #d97706;">
                         <img src="jirafa.png" alt="Giraffa">
                         <span class="char-name font-game">Giraffa</span>
                         <span class="char-fruit">🍑 Pesca</span>
                     </button>
 
                     <button type="button" data-char="panda" onclick="handleSelectChar('panda')" class="character-card card-panda">
-                        <img src="panda.png" alt="Panda">
+                        <img src="panda.png" alt="Tigre">
                         <span class="char-name font-game">Tigre</span>
                         <span class="char-fruit">🍓 Fragola</span>
                     </button>
@@ -373,8 +373,8 @@
                     </button>
 
                     <button type="button" data-char="monkey" onclick="handleSelectChar('monkey')" class="character-card card-monkey">
-                        <img src="mono.png" alt="Scimmia">
-                        <span class="char-name font-game">Scimmia</span>
+                        <img src="mono.png" alt="Mono">
+                        <span class="char-name font-game">Mono</span>
                         <span class="char-fruit">🍌 Banana</span>
                     </button>
                 </div>
@@ -499,9 +499,9 @@
             } catch (e) {}
         }
 
-        // Colores exactos al 34% de transparencia:
-        // #ffb9b9 -> rgba(255, 185, 185, 0.34) (jirafa)
-        // #f6b75f -> rgba(246, 183, 95, 0.34)  (panda)
+        // Colores invertidos entre Jirafa (#f6b75f) y Tigre (#ffb9b9) al 34% de transparencia:
+        // #f6b75f -> rgba(246, 183, 95, 0.34)  (jirafa)
+        // #ffb9b9 -> rgba(255, 185, 185, 0.34) (tigre - archivos logo-panda.png y panda.png)
         // #7ed957 -> rgba(126, 217, 87, 0.34)  (cocodrilo)
         // #ffdc4f -> rgba(255, 220, 79, 0.34)  (mono)
         const CHARACTERS = {
@@ -511,13 +511,13 @@
                 fallbackEmoji: '🦒',
                 logoSrc: 'logo-jirafa.png',
                 animalSrc: 'jirafa.png',
-                bgRgba: 'rgba(255, 185, 185, 0.34)',
+                bgRgba: 'rgba(246, 183, 95, 0.34)',
                 fruitEmoji: '🍑',
                 fruitName: 'pesche',
-                titleColor: '#e11d48',
-                btnGradient: 'linear-gradient(90deg, #f43f5e, #fb7185)',
-                borderColor: '#f43f5e',
-                legendBorder: '#ffb9b9',
+                titleColor: '#d97706',
+                btnGradient: 'linear-gradient(90deg, #f59e0b, #d97706)',
+                borderColor: '#d97706',
+                legendBorder: '#f6b75f',
                 goodItems: [
                     { emoji: '🍑', name: 'Pesca' },
                     { emoji: '🌱', name: 'Soia' }
@@ -525,17 +525,17 @@
             },
             panda: {
                 id: 'panda',
-                name: 'il Panda',
-                fallbackEmoji: '🐼',
+                name: 'il Tigre',
+                fallbackEmoji: '🐯',
                 logoSrc: 'logo-panda.png',
                 animalSrc: 'panda.png',
-                bgRgba: 'rgba(246, 183, 95, 0.34)',
+                bgRgba: 'rgba(255, 185, 185, 0.34)',
                 fruitEmoji: '🍓',
                 fruitName: 'fragole',
-                titleColor: '#d97706',
-                btnGradient: 'linear-gradient(90deg, #f59e0b, #d97706)',
-                borderColor: '#d97706',
-                legendBorder: '#f6b75f',
+                titleColor: '#e11d48',
+                btnGradient: 'linear-gradient(90deg, #f43f5e, #fb7185)',
+                borderColor: '#f43f5e',
+                legendBorder: '#ffb9b9',
                 goodItems: [
                     { emoji: '🍓', name: 'Fragola' },
                     { emoji: '🌱', name: 'Soia' }
@@ -561,7 +561,7 @@
             },
             monkey: {
                 id: 'monkey',
-                name: 'la Scimmia',
+                name: 'il Mono',
                 fallbackEmoji: '🐒',
                 logoSrc: 'logo-mono.png',
                 animalSrc: 'mono.png',
@@ -625,9 +625,9 @@
 
         let lastTime = 0;
         let spawnTimer = 0;
-        let elapsedPlayTime = 0; // Tiempo jugado para progresión suave de velocidad
+        let elapsedPlayTime = 0;
         let animFrameId = null;
-        const BASE_SPAWN_INTERVAL = 1750; // Ritmo inicial muy tranquilo para niños
+        const BASE_SPAWN_INTERVAL = 1750;
 
         const player = {
             x: 150,
@@ -725,10 +725,9 @@
             if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
         }
 
-        // Factor de dificultad suave (aumenta despacio con el tiempo y los puntos)
         function getDifficultyFactor() {
-            const timeBonus = Math.min(85, elapsedPlayTime * 1.1); // +1.1 px/s cada segundo
-            const scoreBonus = Math.min(75, score * 0.25);         // +0.25 px/s por cada punto
+            const timeBonus = Math.min(85, elapsedPlayTime * 1.1);
+            const scoreBonus = Math.min(75, score * 0.25);
             return timeBonus + scoreBonus;
         }
 
@@ -744,7 +743,6 @@
             }
 
             const size = isGood ? Math.max(38, canvas.width * 0.105) : Math.max(32, canvas.width * 0.085);
-            // Velocidad inicial lenta para niños (~95-115 px/s) + aumento progresivo suave
             const baseSpeed = isGood ? (95 + Math.random() * 22) : (88 + Math.random() * 20);
             const progressiveSpeed = getDifficultyFactor();
 
@@ -858,7 +856,6 @@
             if (keys.right) player.x += player.speed * dt;
             clampPlayerPosition();
 
-            // También se reduce ligeramente el tiempo entre frutas de forma gradual (mínimo 880 ms)
             spawnTimer += dt * 1000;
             const intervalReduction = Math.min(850, (elapsedPlayTime * 7) + (score * 1.5));
             const currentInterval = Math.max(880, BASE_SPAWN_INTERVAL - intervalReduction);
@@ -877,152 +874,4 @@
                 const hitX = item.x + item.size * (1 - padding) > player.x + player.width * 0.1 &&
                              item.x + item.size * padding < player.x + player.width * 0.9;
                 const hitY = item.y + item.size * (1 - padding) > player.y + player.height * 0.15 &&
-                             item.y + item.size * padding < player.y + player.height * 0.95;
-
-                if (hitX && hitY) {
-                    if (item.isGood) {
-                        combo++;
-                        const comboBonus = combo > 3 ? 2 : 1;
-                        const pts = 10 * comboBonus;
-                        score += pts;
-                        player.eatScale = 1.0;
-
-                        playSound(combo > 3 ? 'combo' : 'catch');
-                        createParticle(item.x + item.size / 2, item.y, `+${pts} ${combo > 3 ? '⭐' : '😋'}`, '#059669');
-                    } else {
-                        combo = 0;
-                        lives--;
-                        playSound('bad');
-                        createParticle(item.x + item.size / 2, item.y, '-1 ❤️', '#e11d48');
-                        updateLivesUI();
-
-                        if (lives <= 0) {
-                            endGame();
-                            return;
-                        }
-                    }
-
-                    updateUI();
-                    items.splice(i, 1);
-                    continue;
-                }
-
-                if (item.y > canvas.height + 50) {
-                    if (item.isGood) {
-                        combo = 0;
-                        updateUI();
-                    }
-                    items.splice(i, 1);
-                }
-            }
-        }
-
-        function render(dt) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawCanvasBackground();
-            drawPlayer(dt);
-            drawItems();
-            drawParticles(dt);
-        }
-
-        function gameLoop(timestamp) {
-            if (gameState !== 'PLAYING') return;
-
-            if (!lastTime) lastTime = timestamp;
-            const dt = Math.min(0.08, (timestamp - lastTime) / 1000);
-            lastTime = timestamp;
-
-            update(dt);
-            render(dt);
-
-            animFrameId = requestAnimationFrame(gameLoop);
-        }
-
-        function updateUI() {
-            scoreDisplay.textContent = score;
-            comboDisplay.textContent = `x${Math.max(1, combo)}`;
-        }
-
-        function updateLivesUI() {
-            livesContainer.innerHTML = '';
-            for (let i = 0; i < 3; i++) {
-                const heart = document.createElement('span');
-                heart.textContent = i < lives ? '❤️' : '🤍';
-                livesContainer.appendChild(heart);
-            }
-        }
-
-        function startGame() {
-            if (animFrameId) cancelAnimationFrame(animFrameId);
-            initAudio();
-            resizeCanvas();
-            score = 0;
-            lives = 3;
-            combo = 0;
-            elapsedPlayTime = 0;
-            items = [];
-            particles = [];
-            spawnTimer = 0;
-            lastTime = performance.now();
-
-            updateUI();
-            updateLivesUI();
-
-            startScreen.style.display = 'none';
-            pauseScreen.style.display = 'none';
-            gameOverScreen.style.display = 'none';
-
-            gameState = 'PLAYING';
-            player.x = canvas.width / 2 - player.width / 2;
-            spawnItem();
-            render(0);
-            animFrameId = requestAnimationFrame(gameLoop);
-        }
-
-        function showCharacterSelection() {
-            if (animFrameId) cancelAnimationFrame(animFrameId);
-            gameState = 'START';
-            items = [];
-            particles = [];
-            pauseScreen.style.display = 'none';
-            gameOverScreen.style.display = 'none';
-            startScreen.style.display = 'flex';
-            resizeCanvas();
-            render(0);
-        }
-
-        function togglePause() {
-            if (gameState === 'PLAYING') {
-                gameState = 'PAUSED';
-                if (animFrameId) cancelAnimationFrame(animFrameId);
-                pauseScreen.style.display = 'flex';
-            } else if (gameState === 'PAUSED') {
-                gameState = 'PLAYING';
-                pauseScreen.style.display = 'none';
-                lastTime = performance.now();
-                animFrameId = requestAnimationFrame(gameLoop);
-            }
-        }
-
-        function endGame() {
-            gameState = 'GAMEOVER';
-            if (animFrameId) cancelAnimationFrame(animFrameId);
-            const cfg = CHARACTERS[selectedCharKey];
-            if (score > highScore) {
-                highScore = score;
-                try {
-                    localStorage.setItem('soyajoy_high_score', highScore);
-                } catch (e) {}
-            }
-
-            document.getElementById('gameOverSubtitle').textContent =
-                `Ottimo lavoro con ${cfg.name}, le sue ${cfg.fruitName} e la soia!`;
-            finalScoreDisplay.textContent = score;
-            highScoreDisplay.textContent = highScore;
-            gameOverScreen.style.display = 'flex';
-        }
-
-        selectCharacter('giraffe');
-    </script>
-</body>
-</html>
+                             item.y + item.size
